@@ -99,7 +99,7 @@ namespace betareborn
                 }
 
                 // Remove duplicates
-                return modes.Distinct().ToArray();
+                return [.. modes.Distinct()];
             }
         }
 
@@ -436,6 +436,7 @@ namespace betareborn
                 options.WindowBorder = _resizable ? WindowBorder.Resizable : WindowBorder.Fixed;
                 options.VSync = _swapInterval > 0;
                 options.IsVisible = true;
+                options.Samples = 4;
                 options.API = new GraphicsAPI(ContextAPI.OpenGL, ContextProfile.Compatability, ContextFlags.Default, new APIVersion(3, 3));
 
                 if (_x >= 0 && _y >= 0)
@@ -460,6 +461,7 @@ namespace betareborn
         {
             _gl = GL.GetApi(_window);
             _gl.ClearColor(_r, _g, _b, 1.0f);
+            _gl.Enable(EnableCap.Multisample);
         }
 
         private static void onResize(Vector2D<int> size)
