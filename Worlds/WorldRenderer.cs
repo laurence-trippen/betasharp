@@ -119,10 +119,6 @@ namespace betareborn.Worlds
                 GLManager.GL.GetFloat(GLEnum.ModelviewMatrix, (float*)&modelView);
             }
 
-            modelView.M41 = 0;
-            modelView.M42 = 0;
-            modelView.M43 = 0;
-
             unsafe
             {
                 GLManager.GL.GetFloat(GLEnum.ProjectionMatrix, (float*)&projection);

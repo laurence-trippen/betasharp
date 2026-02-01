@@ -439,10 +439,6 @@ namespace betareborn
             {
                 statFileWriter.func_27175_b();
                 statFileWriter.syncStats();
-                //if (mcApplet != null)
-                //{
-                //    mcApplet.clearApplet();
-                //}
 
                 //try
                 //{
@@ -516,14 +512,9 @@ namespace betareborn
                     Profiler.PushGroup("run");
                     try
                     {
-                        //if (mcApplet != null && !mcApplet.isActive())
-                        //{
-                        //    break;
-                        //}
-
                         AxisAlignedBB.clearBoundingBoxPool();
                         Vec3D.initialize();
-                        if ( /*mcCanvas == null && */Display.isCloseRequested())
+                        if (Display.isCloseRequested())
                         {
                             shutdown();
                         }
@@ -646,22 +637,7 @@ namespace betareborn
                         }
 
                         screenshotListener();
-                        //if (mcCanvas != null && !fullscreen && (mcCanvas.getWidth() != displayWidth || mcCanvas.getHeight() != displayHeight))
-                        //{
-                        //    displayWidth = mcCanvas.getWidth();
-                        //    displayHeight = mcCanvas.getHeight();
-                        //    if (displayWidth <= 0)
-                        //    {
-                        //        displayWidth = 1;
-                        //    }
 
-                        //    if (displayHeight <= 0)
-                        //    {
-                        //        displayHeight = 1;
-                        //    }
-
-                        //    resize(displayWidth, displayHeight);
-                        //}
                         if (Display.wasResized())
                         {
                             displayWidth = Display.getWidth();
