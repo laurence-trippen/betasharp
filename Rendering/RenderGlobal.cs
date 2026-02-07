@@ -663,7 +663,7 @@ namespace betareborn.Rendering
                     double var8 = var1.lastTickPosX + (var1.posX - var1.lastTickPosX) * (double)var5;
                     double var10 = var1.lastTickPosY + (var1.posY - var1.lastTickPosY) * (double)var5;
                     double var12 = var1.lastTickPosZ + (var1.posZ - var1.lastTickPosZ) * (double)var5;
-                    drawOutlinedBoundingBox(Block.BLOCKS[var7].getBoundingBox(worldObj, var2.blockX, var2.blockY, var2.blockZ).expand((double)var6, (double)var6, (double)var6).translate(-var8, -var10, -var12));
+                    drawOutlinedBoundingBox(Block.BLOCKS[var7].getBoundingBox(worldObj, var2.blockX, var2.blockY, var2.blockZ).expand((double)var6, (double)var6, (double)var6).offset(-var8, -var10, -var12));
                 }
 
                 GLManager.GL.DepthMask(true);

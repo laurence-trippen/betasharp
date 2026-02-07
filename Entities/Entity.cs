@@ -290,7 +290,7 @@ namespace betareborn.Entities
 
         public bool isOffsetPositionInLiquid(double var1, double var3, double var5)
         {
-            Box var7 = boundingBox.translate(var1, var3, var5);
+            Box var7 = boundingBox.offset(var1, var3, var5);
             var var8 = worldObj.getCollidingBoundingBoxes(this, var7);
             return var8.Count > 0 ? false : !worldObj.getIsAnyLiquid(var7);
         }
@@ -328,7 +328,7 @@ namespace betareborn.Entities
                 if (var18)
                 {
                     double var19;
-                    for (var19 = 0.05D; var1 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.translate(var1, -1.0D, 0.0D)).Count == 0; var11 = var1)
+                    for (var19 = 0.05D; var1 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.offset(var1, -1.0D, 0.0D)).Count == 0; var11 = var1)
                     {
                         if (var1 < var19 && var1 >= -var19)
                         {
@@ -344,7 +344,7 @@ namespace betareborn.Entities
                         }
                     }
 
-                    for (; var5 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.translate(0.0D, -1.0D, var5)).Count == 0; var15 = var5)
+                    for (; var5 != 0.0D && worldObj.getCollidingBoundingBoxes(this, boundingBox.offset(0.0D, -1.0D, var5)).Count == 0; var15 = var5)
                     {
                         if (var5 < var19 && var5 >= -var19)
                         {
