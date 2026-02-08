@@ -66,31 +66,29 @@ namespace betareborn
                         {
                             ChunkPos var10 = (ChunkPos)var39.next();
                             Biome var11 = var0.getBiomeSource().getBiome(var10);
-                            List var12 = var11.getSpawnableList(var38);
+                            var var12 = var11.getSpawnableList(var38);
 
-                            if (var12 == null || var12.isEmpty())
+                            if (var12 == null || var12.Count == 0)
                             {
                                 continue;
                             }
 
                             int var13 = 0;
-                            SpawnListEntry var15;
-                            for (Iterator var14 = var12.iterator(); var14.hasNext(); var13 += var15.spawnRarityRate)
+                            foreach (var entry in var12)
                             {
-                                var15 = (SpawnListEntry)var14.next();
+                                var13 += entry.spawnRarityRate;
                             }
 
                             int var40 = var0.random.nextInt(var13);
-                            var15 = (SpawnListEntry)var12.get(0);
-                            Iterator var16 = var12.iterator();
+                            SpawnListEntry? e = null;
 
-                            while (var16.hasNext())
+                            foreach (var entry in var12)
                             {
-                                SpawnListEntry var17 = (SpawnListEntry)var16.next();
-                                var40 -= var17.spawnRarityRate;
+                                var40 -= entry.spawnRarityRate;
+
                                 if (var40 < 0)
                                 {
-                                    var15 = var17;
+                                    e = entry;
                                     break;
                                 }
                             }
@@ -141,7 +139,7 @@ namespace betareborn
                                                 EntityLiving var43;
                                                 try
                                                 {
-                                                    var43 = (EntityLiving)var15.entityClass.getConstructor(new Class[] { World.Class }).newInstance(new java.lang.Object[] { var0 });
+                                                    var43 = (EntityLiving)e!.entityClass.getConstructor(new Class[] { World.Class }).newInstance(new java.lang.Object[] { var0 });
                                                 }
                                                 catch (java.lang.Exception var34)
                                                 {

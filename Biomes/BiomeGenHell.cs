@@ -7,12 +7,12 @@ namespace betareborn.Biomes
 
         public BiomeGenHell()
         {
-            spawnableMonsterList.clear();
-            spawnableCreatureList.clear();
-            spawnableWaterCreatureList.clear();
-            spawnableMonsterList.add(new SpawnListEntry(EntityGhast.Class, 10));
+            spawnableMonsterList.Clear();
+            spawnableCreatureList.Clear();
+            spawnableWaterCreatureList.Clear();
+            spawnableMonsterList.Add(new SpawnListEntry(EntityGhast.Class, 10));
 
-            spawnableMonsterList.add(new SpawnListEntry(EntityPigZombie.Class, 10));
+            spawnableMonsterList.Add(new SpawnListEntry(EntityPigZombie.Class, 10));
         }
     }
 

@@ -1,16 +1,16 @@
 using betareborn.Blocks;
 using betareborn.Materials;
 
-namespace betareborn.Worlds
+namespace betareborn.Worlds.Gen
 {
-    public class WorldGenLakes : WorldGenerator
+    public class LakeFeature : Feature
     {
 
-        private int field_15235_a;
+        private int waterBlockId;
 
-        public WorldGenLakes(int var1)
+        public LakeFeature(int var1)
         {
-            field_15235_a = var1;
+            waterBlockId = var1;
         }
 
         public override bool generate(World var1, java.util.Random var2, int var3, int var4, int var5)
@@ -41,9 +41,9 @@ namespace betareborn.Worlds
                     {
                         for (int var23 = 1; var23 < 7; ++var23)
                         {
-                            double var24 = ((double)var21 - var15) / (var9 / 2.0D);
-                            double var26 = ((double)var23 - var17) / (var11 / 2.0D);
-                            double var28 = ((double)var22 - var19) / (var13 / 2.0D);
+                            double var24 = (var21 - var15) / (var9 / 2.0D);
+                            double var26 = (var23 - var17) / (var11 / 2.0D);
+                            double var28 = (var22 - var19) / (var13 / 2.0D);
                             double var30 = var24 * var24 + var26 * var26 + var28 * var28;
                             if (var30 < 1.0D)
                             {
@@ -72,7 +72,7 @@ namespace betareborn.Worlds
                                 return false;
                             }
 
-                            if (var10 < 4 && !var12.isSolid() && var1.getBlockId(var3 + var8, var4 + var10, var5 + var32) != field_15235_a)
+                            if (var10 < 4 && !var12.isSolid() && var1.getBlockId(var3 + var8, var4 + var10, var5 + var32) != waterBlockId)
                             {
                                 return false;
                             }
@@ -89,7 +89,7 @@ namespace betareborn.Worlds
                     {
                         if (var6[(var8 * 16 + var32) * 8 + var10])
                         {
-                            var1.setBlock(var3 + var8, var4 + var10, var5 + var32, var10 >= 4 ? 0 : field_15235_a);
+                            var1.setBlock(var3 + var8, var4 + var10, var5 + var32, var10 >= 4 ? 0 : waterBlockId);
                         }
                     }
                 }
@@ -109,7 +109,7 @@ namespace betareborn.Worlds
                 }
             }
 
-            if (Block.BLOCKS[field_15235_a].material == Material.LAVA)
+            if (Block.BLOCKS[waterBlockId].material == Material.LAVA)
             {
                 for (var8 = 0; var8 < 16; ++var8)
                 {

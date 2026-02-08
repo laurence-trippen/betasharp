@@ -1,15 +1,15 @@
 using betareborn.Blocks;
 
-namespace betareborn.Worlds
+namespace betareborn.Worlds.Gen
 {
-    public class WorldGenHellLava : WorldGenerator
+    public class NetherLavaSpringFeature : Feature
     {
 
-        private int field_4158_a;
+        private int lavaBlockId;
 
-        public WorldGenHellLava(int var1)
+        public NetherLavaSpringFeature(int var1)
         {
-            field_4158_a = var1;
+            lavaBlockId = var1;
         }
 
         public override bool generate(World var1, java.util.Random var2, int var3, int var4, int var5)
@@ -78,9 +78,9 @@ namespace betareborn.Worlds
 
                 if (var6 == 4 && var7 == 1)
                 {
-                    var1.setBlockWithNotify(var3, var4, var5, field_4158_a);
+                    var1.setBlockWithNotify(var3, var4, var5, lavaBlockId);
                     var1.scheduledUpdatesAreImmediate = true;
-                    Block.BLOCKS[field_4158_a].onTick(var1, var3, var4, var5, var2);
+                    Block.BLOCKS[lavaBlockId].onTick(var1, var3, var4, var5, var2);
                     var1.scheduledUpdatesAreImmediate = false;
                 }
 

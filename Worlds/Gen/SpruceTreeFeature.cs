@@ -1,8 +1,8 @@
 using betareborn.Blocks;
 
-namespace betareborn.Worlds
+namespace betareborn.Worlds.Gen
 {
-    public class WorldGenTaiga2 : WorldGenerator
+    public class SpruceTreeFeature : Feature
     {
 
         public override bool generate(World var1, java.util.Random var2, int var3, int var4, int var5)

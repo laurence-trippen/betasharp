@@ -1,5 +1,6 @@
 using betareborn.Entities;
 using betareborn.Worlds;
+using betareborn.Worlds.Gen;
 
 namespace betareborn.Biomes
 {
@@ -8,12 +9,12 @@ namespace betareborn.Biomes
 
         public BiomeGenTaiga()
         {
-            spawnableCreatureList.add(new SpawnListEntry(EntityWolf.Class, 2));
+            spawnableCreatureList.Add(new SpawnListEntry(EntityWolf.Class, 2));
         }
 
-        public override WorldGenerator getRandomWorldGenForTrees(java.util.Random var1)
+        public override Feature getRandomWorldGenForTrees(java.util.Random var1)
         {
-            return (WorldGenerator)(var1.nextInt(3) == 0 ? new WorldGenTaiga1() : new WorldGenTaiga2());
+            return (Feature)(var1.nextInt(3) == 0 ? new PineTreeFeature() : new SpruceTreeFeature());
         }
     }
 

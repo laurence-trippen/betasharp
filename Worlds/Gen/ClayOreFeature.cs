@@ -1,15 +1,15 @@
 using betareborn.Blocks;
 using betareborn.Materials;
 
-namespace betareborn.Worlds
+namespace betareborn.Worlds.Gen
 {
-    public class WorldGenClay : WorldGenerator
+    public class ClayOreFeature : Feature
     {
 
         private int clayBlockId = Block.CLAY.id;
         private int numberOfBlocks;
 
-        public WorldGenClay(int var1)
+        public ClayOreFeature(int var1)
         {
             numberOfBlocks = var1;
         }
@@ -23,21 +23,21 @@ namespace betareborn.Worlds
             else
             {
                 float var6 = var2.nextFloat() * (float)Math.PI;
-                double var7 = (double)((float)(var3 + 8) + MathHelper.sin(var6) * (float)numberOfBlocks / 8.0F);
-                double var9 = (double)((float)(var3 + 8) - MathHelper.sin(var6) * (float)numberOfBlocks / 8.0F);
-                double var11 = (double)((float)(var5 + 8) + MathHelper.cos(var6) * (float)numberOfBlocks / 8.0F);
-                double var13 = (double)((float)(var5 + 8) - MathHelper.cos(var6) * (float)numberOfBlocks / 8.0F);
-                double var15 = (double)(var4 + var2.nextInt(3) + 2);
-                double var17 = (double)(var4 + var2.nextInt(3) + 2);
+                double var7 = (double)(var3 + 8 + MathHelper.sin(var6) * numberOfBlocks / 8.0F);
+                double var9 = (double)(var3 + 8 - MathHelper.sin(var6) * numberOfBlocks / 8.0F);
+                double var11 = (double)(var5 + 8 + MathHelper.cos(var6) * numberOfBlocks / 8.0F);
+                double var13 = (double)(var5 + 8 - MathHelper.cos(var6) * numberOfBlocks / 8.0F);
+                double var15 = var4 + var2.nextInt(3) + 2;
+                double var17 = var4 + var2.nextInt(3) + 2;
 
                 for (int var19 = 0; var19 <= numberOfBlocks; ++var19)
                 {
-                    double var20 = var7 + (var9 - var7) * (double)var19 / (double)numberOfBlocks;
-                    double var22 = var15 + (var17 - var15) * (double)var19 / (double)numberOfBlocks;
-                    double var24 = var11 + (var13 - var11) * (double)var19 / (double)numberOfBlocks;
-                    double var26 = var2.nextDouble() * (double)numberOfBlocks / 16.0D;
-                    double var28 = (double)(MathHelper.sin((float)var19 * (float)Math.PI / (float)numberOfBlocks) + 1.0F) * var26 + 1.0D;
-                    double var30 = (double)(MathHelper.sin((float)var19 * (float)Math.PI / (float)numberOfBlocks) + 1.0F) * var26 + 1.0D;
+                    double var20 = var7 + (var9 - var7) * var19 / numberOfBlocks;
+                    double var22 = var15 + (var17 - var15) * var19 / numberOfBlocks;
+                    double var24 = var11 + (var13 - var11) * var19 / numberOfBlocks;
+                    double var26 = var2.nextDouble() * numberOfBlocks / 16.0D;
+                    double var28 = (double)(MathHelper.sin(var19 * (float)Math.PI / numberOfBlocks) + 1.0F) * var26 + 1.0D;
+                    double var30 = (double)(MathHelper.sin(var19 * (float)Math.PI / numberOfBlocks) + 1.0F) * var26 + 1.0D;
                     int var32 = MathHelper.floor_double(var20 - var28 / 2.0D);
                     int var33 = MathHelper.floor_double(var20 + var28 / 2.0D);
                     int var34 = MathHelper.floor_double(var22 - var30 / 2.0D);
@@ -51,9 +51,9 @@ namespace betareborn.Worlds
                         {
                             for (int var40 = var36; var40 <= var37; ++var40)
                             {
-                                double var41 = ((double)var38 + 0.5D - var20) / (var28 / 2.0D);
-                                double var43 = ((double)var39 + 0.5D - var22) / (var30 / 2.0D);
-                                double var45 = ((double)var40 + 0.5D - var24) / (var28 / 2.0D);
+                                double var41 = (var38 + 0.5D - var20) / (var28 / 2.0D);
+                                double var43 = (var39 + 0.5D - var22) / (var30 / 2.0D);
+                                double var45 = (var40 + 0.5D - var24) / (var28 / 2.0D);
                                 if (var41 * var41 + var43 * var43 + var45 * var45 < 1.0D)
                                 {
                                     int var47 = var1.getBlockId(var38, var39, var40);

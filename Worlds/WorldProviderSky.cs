@@ -10,7 +10,7 @@ namespace betareborn.Worlds
 
         public override void registerWorldChunkManager()
         {
-            worldChunkMgr = new WorldChunkManagerHell(Biome.sky, 0.5D, 0.0D);
+            worldChunkMgr = new WorldChunkManagerHell(Biome.SKY, 0.5D, 0.0D);
             worldType = 1;
         }
 

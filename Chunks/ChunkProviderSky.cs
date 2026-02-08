@@ -2,6 +2,7 @@ using betareborn.Biomes;
 using betareborn.Blocks;
 using betareborn.Materials;
 using betareborn.Worlds;
+using betareborn.Worlds.Gen;
 
 namespace betareborn.Chunks
 {
@@ -127,8 +128,8 @@ namespace betareborn.Chunks
                     Biome var9 = var4[var7 + var8 * 16];
                     int var10 = (int)(field_28077_t[var7 + var8 * 16] / 3.0D + 3.0D + field_28087_j.nextDouble() * 0.25D);
                     int var11 = -1;
-                    byte var12 = var9.topBlock;
-                    byte var13 = var9.fillerBlock;
+                    byte var12 = var9.topBlockId;
+                    byte var13 = var9.soilBlockId;
 
                     for (int var14 = 127; var14 >= 0; --var14)
                     {
@@ -333,7 +334,7 @@ namespace betareborn.Chunks
                 var13 = var4 + field_28087_j.nextInt(16) + 8;
                 var14 = field_28087_j.nextInt(128);
                 var15 = var5 + field_28087_j.nextInt(16) + 8;
-                (new WorldGenLakes(Block.WATER.id)).generate(field_28081_p, field_28087_j, var13, var14, var15);
+                (new LakeFeature(Block.WATER.id)).generate(field_28081_p, field_28087_j, var13, var14, var15);
             }
 
             if (field_28087_j.nextInt(8) == 0)
@@ -343,7 +344,7 @@ namespace betareborn.Chunks
                 var15 = var5 + field_28087_j.nextInt(16) + 8;
                 if (var14 < 64 || field_28087_j.nextInt(10) == 0)
                 {
-                    (new WorldGenLakes(Block.LAVA.id)).generate(field_28081_p, field_28087_j, var13, var14, var15);
+                    (new LakeFeature(Block.LAVA.id)).generate(field_28081_p, field_28087_j, var13, var14, var15);
                 }
             }
 
@@ -353,7 +354,7 @@ namespace betareborn.Chunks
                 var14 = var4 + field_28087_j.nextInt(16) + 8;
                 var15 = field_28087_j.nextInt(128);
                 var16 = var5 + field_28087_j.nextInt(16) + 8;
-                (new WorldGenDungeons()).generate(field_28081_p, field_28087_j, var14, var15, var16);
+                (new DungeonFeature()).generate(field_28081_p, field_28087_j, var14, var15, var16);
             }
 
             for (var13 = 0; var13 < 10; ++var13)
@@ -361,7 +362,7 @@ namespace betareborn.Chunks
                 var14 = var4 + field_28087_j.nextInt(16);
                 var15 = field_28087_j.nextInt(128);
                 var16 = var5 + field_28087_j.nextInt(16);
-                (new WorldGenClay(32)).generate(field_28081_p, field_28087_j, var14, var15, var16);
+                (new ClayOreFeature(32)).generate(field_28081_p, field_28087_j, var14, var15, var16);
             }
 
             for (var13 = 0; var13 < 20; ++var13)
@@ -369,7 +370,7 @@ namespace betareborn.Chunks
                 var14 = var4 + field_28087_j.nextInt(16);
                 var15 = field_28087_j.nextInt(128);
                 var16 = var5 + field_28087_j.nextInt(16);
-                (new WorldGenMinable(Block.DIRT.id, 32)).generate(field_28081_p, field_28087_j, var14, var15, var16);
+                (new OreFeature(Block.DIRT.id, 32)).generate(field_28081_p, field_28087_j, var14, var15, var16);
             }
 
             for (var13 = 0; var13 < 10; ++var13)
@@ -377,7 +378,7 @@ namespace betareborn.Chunks
                 var14 = var4 + field_28087_j.nextInt(16);
                 var15 = field_28087_j.nextInt(128);
                 var16 = var5 + field_28087_j.nextInt(16);
-                (new WorldGenMinable(Block.GRAVEL.id, 32)).generate(field_28081_p, field_28087_j, var14, var15, var16);
+                (new OreFeature(Block.GRAVEL.id, 32)).generate(field_28081_p, field_28087_j, var14, var15, var16);
             }
 
             for (var13 = 0; var13 < 20; ++var13)
@@ -385,7 +386,7 @@ namespace betareborn.Chunks
                 var14 = var4 + field_28087_j.nextInt(16);
                 var15 = field_28087_j.nextInt(128);
                 var16 = var5 + field_28087_j.nextInt(16);
-                (new WorldGenMinable(Block.COAL_ORE.id, 16)).generate(field_28081_p, field_28087_j, var14, var15, var16);
+                (new OreFeature(Block.COAL_ORE.id, 16)).generate(field_28081_p, field_28087_j, var14, var15, var16);
             }
 
             for (var13 = 0; var13 < 20; ++var13)
@@ -393,7 +394,7 @@ namespace betareborn.Chunks
                 var14 = var4 + field_28087_j.nextInt(16);
                 var15 = field_28087_j.nextInt(64);
                 var16 = var5 + field_28087_j.nextInt(16);
-                (new WorldGenMinable(Block.IRON_ORE.id, 8)).generate(field_28081_p, field_28087_j, var14, var15, var16);
+                (new OreFeature(Block.IRON_ORE.id, 8)).generate(field_28081_p, field_28087_j, var14, var15, var16);
             }
 
             for (var13 = 0; var13 < 2; ++var13)
@@ -401,7 +402,7 @@ namespace betareborn.Chunks
                 var14 = var4 + field_28087_j.nextInt(16);
                 var15 = field_28087_j.nextInt(32);
                 var16 = var5 + field_28087_j.nextInt(16);
-                (new WorldGenMinable(Block.GOLD_ORE.id, 8)).generate(field_28081_p, field_28087_j, var14, var15, var16);
+                (new OreFeature(Block.GOLD_ORE.id, 8)).generate(field_28081_p, field_28087_j, var14, var15, var16);
             }
 
             for (var13 = 0; var13 < 8; ++var13)
@@ -409,7 +410,7 @@ namespace betareborn.Chunks
                 var14 = var4 + field_28087_j.nextInt(16);
                 var15 = field_28087_j.nextInt(16);
                 var16 = var5 + field_28087_j.nextInt(16);
-                (new WorldGenMinable(Block.REDSTONE_ORE.id, 7)).generate(field_28081_p, field_28087_j, var14, var15, var16);
+                (new OreFeature(Block.REDSTONE_ORE.id, 7)).generate(field_28081_p, field_28087_j, var14, var15, var16);
             }
 
             for (var13 = 0; var13 < 1; ++var13)
@@ -417,7 +418,7 @@ namespace betareborn.Chunks
                 var14 = var4 + field_28087_j.nextInt(16);
                 var15 = field_28087_j.nextInt(16);
                 var16 = var5 + field_28087_j.nextInt(16);
-                (new WorldGenMinable(Block.DIAMOND_ORE.id, 7)).generate(field_28081_p, field_28087_j, var14, var15, var16);
+                (new OreFeature(Block.DIAMOND_ORE.id, 7)).generate(field_28081_p, field_28087_j, var14, var15, var16);
             }
 
             for (var13 = 0; var13 < 1; ++var13)
@@ -425,7 +426,7 @@ namespace betareborn.Chunks
                 var14 = var4 + field_28087_j.nextInt(16);
                 var15 = field_28087_j.nextInt(16) + field_28087_j.nextInt(16);
                 var16 = var5 + field_28087_j.nextInt(16);
-                (new WorldGenMinable(Block.LAPIS_ORE.id, 6)).generate(field_28081_p, field_28087_j, var14, var15, var16);
+                (new OreFeature(Block.LAPIS_ORE.id, 6)).generate(field_28081_p, field_28087_j, var14, var15, var16);
             }
 
             var11 = 0.5D;
@@ -436,37 +437,37 @@ namespace betareborn.Chunks
                 ++var14;
             }
 
-            if (var6 == Biome.forest)
+            if (var6 == Biome.FOREST)
             {
                 var14 += var13 + 5;
             }
 
-            if (var6 == Biome.rainforest)
+            if (var6 == Biome.RAINFOREST)
             {
                 var14 += var13 + 5;
             }
 
-            if (var6 == Biome.seasonalForest)
+            if (var6 == Biome.SEASONAL_FOREST)
             {
                 var14 += var13 + 2;
             }
 
-            if (var6 == Biome.taiga)
+            if (var6 == Biome.TAIGA)
             {
                 var14 += var13 + 5;
             }
 
-            if (var6 == Biome.desert)
+            if (var6 == Biome.DESERT)
             {
                 var14 -= 20;
             }
 
-            if (var6 == Biome.tundra)
+            if (var6 == Biome.TUNDRA)
             {
                 var14 -= 20;
             }
 
-            if (var6 == Biome.plains)
+            if (var6 == Biome.PLAINS)
             {
                 var14 -= 20;
             }
@@ -476,8 +477,8 @@ namespace betareborn.Chunks
             {
                 var16 = var4 + field_28087_j.nextInt(16) + 8;
                 var17 = var5 + field_28087_j.nextInt(16) + 8;
-                WorldGenerator var18 = var6.getRandomWorldGenForTrees(field_28087_j);
-                var18.func_517_a(1.0D, 1.0D, 1.0D);
+                Feature var18 = var6.getRandomWorldGenForTrees(field_28087_j);
+                var18.prepare(1.0D, 1.0D, 1.0D);
                 var18.generate(field_28081_p, field_28087_j, var16, field_28081_p.getTopY(var16, var17), var17);
             }
 
@@ -487,7 +488,7 @@ namespace betareborn.Chunks
                 var16 = var4 + field_28087_j.nextInt(16) + 8;
                 var17 = field_28087_j.nextInt(128);
                 var23 = var5 + field_28087_j.nextInt(16) + 8;
-                (new WorldGenFlowers(Block.DANDELION.id)).generate(field_28081_p, field_28087_j, var16, var17, var23);
+                (new PlantPatchFeature(Block.DANDELION.id)).generate(field_28081_p, field_28087_j, var16, var17, var23);
             }
 
             if (field_28087_j.nextInt(2) == 0)
@@ -495,7 +496,7 @@ namespace betareborn.Chunks
                 var15 = var4 + field_28087_j.nextInt(16) + 8;
                 var16 = field_28087_j.nextInt(128);
                 var17 = var5 + field_28087_j.nextInt(16) + 8;
-                (new WorldGenFlowers(Block.ROSE.id)).generate(field_28081_p, field_28087_j, var15, var16, var17);
+                (new PlantPatchFeature(Block.ROSE.id)).generate(field_28081_p, field_28087_j, var15, var16, var17);
             }
 
             if (field_28087_j.nextInt(4) == 0)
@@ -503,7 +504,7 @@ namespace betareborn.Chunks
                 var15 = var4 + field_28087_j.nextInt(16) + 8;
                 var16 = field_28087_j.nextInt(128);
                 var17 = var5 + field_28087_j.nextInt(16) + 8;
-                (new WorldGenFlowers(Block.BROWN_MUSHROOM.id)).generate(field_28081_p, field_28087_j, var15, var16, var17);
+                (new PlantPatchFeature(Block.BROWN_MUSHROOM.id)).generate(field_28081_p, field_28087_j, var15, var16, var17);
             }
 
             if (field_28087_j.nextInt(8) == 0)
@@ -511,7 +512,7 @@ namespace betareborn.Chunks
                 var15 = var4 + field_28087_j.nextInt(16) + 8;
                 var16 = field_28087_j.nextInt(128);
                 var17 = var5 + field_28087_j.nextInt(16) + 8;
-                (new WorldGenFlowers(Block.RED_MUSHROOM.id)).generate(field_28081_p, field_28087_j, var15, var16, var17);
+                (new PlantPatchFeature(Block.RED_MUSHROOM.id)).generate(field_28081_p, field_28087_j, var15, var16, var17);
             }
 
             for (var15 = 0; var15 < 10; ++var15)
@@ -519,7 +520,7 @@ namespace betareborn.Chunks
                 var16 = var4 + field_28087_j.nextInt(16) + 8;
                 var17 = field_28087_j.nextInt(128);
                 var23 = var5 + field_28087_j.nextInt(16) + 8;
-                (new WorldGenReed()).generate(field_28081_p, field_28087_j, var16, var17, var23);
+                (new SugarCanePatchFeature()).generate(field_28081_p, field_28087_j, var16, var17, var23);
             }
 
             if (field_28087_j.nextInt(32) == 0)
@@ -527,11 +528,11 @@ namespace betareborn.Chunks
                 var15 = var4 + field_28087_j.nextInt(16) + 8;
                 var16 = field_28087_j.nextInt(128);
                 var17 = var5 + field_28087_j.nextInt(16) + 8;
-                (new WorldGenPumpkin()).generate(field_28081_p, field_28087_j, var15, var16, var17);
+                (new PumpkinPatchFeature()).generate(field_28081_p, field_28087_j, var15, var16, var17);
             }
 
             var15 = 0;
-            if (var6 == Biome.desert)
+            if (var6 == Biome.DESERT)
             {
                 var15 += 10;
             }
@@ -542,7 +543,7 @@ namespace betareborn.Chunks
                 var17 = var4 + field_28087_j.nextInt(16) + 8;
                 var23 = field_28087_j.nextInt(128);
                 var19 = var5 + field_28087_j.nextInt(16) + 8;
-                (new WorldGenCactus()).generate(field_28081_p, field_28087_j, var17, var23, var19);
+                (new CactusPatchFeature()).generate(field_28081_p, field_28087_j, var17, var23, var19);
             }
 
             for (var16 = 0; var16 < 50; ++var16)
@@ -550,7 +551,7 @@ namespace betareborn.Chunks
                 var17 = var4 + field_28087_j.nextInt(16) + 8;
                 var23 = field_28087_j.nextInt(field_28087_j.nextInt(120) + 8);
                 var19 = var5 + field_28087_j.nextInt(16) + 8;
-                (new WorldGenLiquids(Block.FLOWING_WATER.id)).generate(field_28081_p, field_28087_j, var17, var23, var19);
+                (new SpringFeature(Block.FLOWING_WATER.id)).generate(field_28081_p, field_28087_j, var17, var23, var19);
             }
 
             for (var16 = 0; var16 < 20; ++var16)
@@ -558,7 +559,7 @@ namespace betareborn.Chunks
                 var17 = var4 + field_28087_j.nextInt(16) + 8;
                 var23 = field_28087_j.nextInt(field_28087_j.nextInt(field_28087_j.nextInt(112) + 8) + 8);
                 var19 = var5 + field_28087_j.nextInt(16) + 8;
-                (new WorldGenLiquids(Block.FLOWING_LAVA.id)).generate(field_28081_p, field_28087_j, var17, var23, var19);
+                (new SpringFeature(Block.FLOWING_LAVA.id)).generate(field_28081_p, field_28087_j, var17, var23, var19);
             }
 
             field_28074_w = field_28081_p.getBiomeSource().getTemperatures(field_28074_w, var4 + 8, var5 + 8, 16, 16);

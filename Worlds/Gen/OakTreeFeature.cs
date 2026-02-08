@@ -1,13 +1,13 @@
 using betareborn.Blocks;
 
-namespace betareborn.Worlds
+namespace betareborn.Worlds.Gen
 {
-    public class WorldGenForest : WorldGenerator
+    public class OakTreeFeature : Feature
     {
 
         public override bool generate(World var1, java.util.Random var2, int var3, int var4, int var5)
         {
-            int var6 = var2.nextInt(3) + 5;
+            int var6 = var2.nextInt(3) + 4;
             bool var7 = true;
             if (var4 >= 1 && var4 + var6 + 1 <= 128)
             {
@@ -74,7 +74,7 @@ namespace betareborn.Worlds
                                     int var15 = var14 - var5;
                                     if ((java.lang.Math.abs(var13) != var11 || java.lang.Math.abs(var15) != var11 || var2.nextInt(2) != 0 && var10 != 0) && !Block.BLOCKS_OPAQUE[var1.getBlockId(var12, var16, var14)])
                                     {
-                                        var1.setBlockAndMetadata(var12, var16, var14, Block.LEAVES.id, 2);
+                                        var1.setBlock(var12, var16, var14, Block.LEAVES.id);
                                     }
                                 }
                             }
@@ -85,7 +85,7 @@ namespace betareborn.Worlds
                             var10 = var1.getBlockId(var3, var4 + var16, var5);
                             if (var10 == 0 || var10 == Block.LEAVES.id)
                             {
-                                var1.setBlockAndMetadata(var3, var4 + var16, var5, Block.LOG.id, 2);
+                                var1.setBlock(var3, var4 + var16, var5, Block.LOG.id);
                             }
                         }
 

@@ -1,4 +1,5 @@
 using betareborn.Worlds;
+using betareborn.Worlds.Gen;
 
 namespace betareborn.Blocks
 {
@@ -44,22 +45,22 @@ namespace betareborn.Blocks
             object var7 = null;
             if (var6 == 1)
             {
-                var7 = new WorldGenTaiga2();
+                var7 = new SpruceTreeFeature();
             }
             else if (var6 == 2)
             {
-                var7 = new WorldGenForest();
+                var7 = new BirchTreeFeature();
             }
             else
             {
-                var7 = new WorldGenTrees();
+                var7 = new OakTreeFeature();
                 if (random.nextInt(10) == 0)
                 {
-                    var7 = new WorldGenBigTree();
+                    var7 = new LargeOakTreeFeature();
                 }
             }
 
-            if (!((WorldGenerator)var7).generate(world, random, x, y, z))
+            if (!((Feature)var7).generate(world, random, x, y, z))
             {
                 world.setBlockAndMetadata(x, y, z, id, var6);
             }

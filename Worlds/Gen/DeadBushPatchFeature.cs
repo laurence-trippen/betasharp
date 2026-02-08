@@ -1,17 +1,15 @@
 using betareborn.Blocks;
 
-namespace betareborn.Worlds
+namespace betareborn.Worlds.Gen
 {
-    public class WorldGenTallGrass : WorldGenerator
+    public class DeadBushPatchFeature : Feature
     {
 
-        private int field_28060_a;
-        private int field_28059_b;
+        private int deadBushBlockId;
 
-        public WorldGenTallGrass(int var1, int var2)
+        public DeadBushPatchFeature(int var1)
         {
-            field_28060_a = var1;
-            field_28059_b = var2;
+            deadBushBlockId = var1;
         }
 
         public override bool generate(World var1, java.util.Random var2, int var3, int var4, int var5)
@@ -23,14 +21,14 @@ namespace betareborn.Worlds
                 int var11 = var1.getBlockId(var3, var4, var5);
                 if (var11 != 0 && var11 != Block.LEAVES.id || var4 <= 0)
                 {
-                    for (int var7 = 0; var7 < 128; ++var7)
+                    for (int var7 = 0; var7 < 4; ++var7)
                     {
                         int var8 = var3 + var2.nextInt(8) - var2.nextInt(8);
                         int var9 = var4 + var2.nextInt(4) - var2.nextInt(4);
                         int var10 = var5 + var2.nextInt(8) - var2.nextInt(8);
-                        if (var1.isAir(var8, var9, var10) && ((BlockPlant)Block.BLOCKS[field_28060_a]).canGrow(var1, var8, var9, var10))
+                        if (var1.isAir(var8, var9, var10) && ((BlockPlant)Block.BLOCKS[deadBushBlockId]).canGrow(var1, var8, var9, var10))
                         {
-                            var1.setBlockAndMetadata(var8, var9, var10, field_28060_a, field_28059_b);
+                            var1.setBlock(var8, var9, var10, deadBushBlockId);
                         }
                     }
 

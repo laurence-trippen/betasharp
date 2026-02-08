@@ -1,13 +1,13 @@
 using betareborn.Blocks;
 
-namespace betareborn.Worlds
+namespace betareborn.Worlds.Gen
 {
-    public class WorldGenLiquids : WorldGenerator
+    public class SpringFeature : Feature
     {
 
         private int liquidBlockId;
 
-        public WorldGenLiquids(int var1)
+        public SpringFeature(int var1)
         {
             liquidBlockId = var1;
         }

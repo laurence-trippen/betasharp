@@ -9,7 +9,7 @@ namespace betareborn.Worlds
     {
         public override void registerWorldChunkManager()
         {
-            worldChunkMgr = new WorldChunkManagerHell(Biome.hell, 1.0D, 0.0D);
+            worldChunkMgr = new WorldChunkManagerHell(Biome.HELL, 1.0D, 0.0D);
             isNether = true;
             isHellWorld = true;
             hasNoSky = true;

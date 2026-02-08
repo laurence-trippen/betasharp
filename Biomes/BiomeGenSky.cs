@@ -7,10 +7,10 @@ namespace betareborn.Biomes
 
         public BiomeGenSky()
         {
-            spawnableMonsterList.clear();
-            spawnableCreatureList.clear();
-            spawnableWaterCreatureList.clear();
-            spawnableCreatureList.add(new SpawnListEntry(EntityChicken.Class, 10));
+            spawnableMonsterList.Clear();
+            spawnableCreatureList.Clear();
+            spawnableWaterCreatureList.Clear();
+            spawnableCreatureList.Add(new SpawnListEntry(EntityChicken.Class, 10));
         }
 
         public override int getSkyColorByTemp(float var1)
