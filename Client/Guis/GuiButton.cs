@@ -52,7 +52,7 @@ namespace betareborn.Client.Guis
             if (enabled2)
             {
                 FontRenderer var4 = var1.fontRenderer;
-                GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)var1.renderEngine.getTexture("/gui/gui.png"));
+                GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)var1.textureManager.getTexture("/gui/gui.png"));
                 GLManager.GL.Color4(1.0F, 1.0F, 1.0F, 1.0F);
                 bool var5 = var2 >= xPosition && var3 >= yPosition && var2 < xPosition + width && var3 < yPosition + height;
                 int var6 = getHoverState(var5);

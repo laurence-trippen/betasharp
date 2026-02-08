@@ -30,7 +30,7 @@ namespace betareborn.Client.Guis
                 string var3 = message.Trim();
                 if (var3.Length > 0)
                 {
-                    mc.thePlayer.sendChatMessage(message.Trim());
+                    mc.player.sendChatMessage(message.Trim());
                 }
 
                 message = "";
@@ -62,10 +62,10 @@ namespace betareborn.Client.Guis
 
         private void func_22115_j()
         {
-            if (mc.thePlayer is EntityClientPlayerMP)
+            if (mc.player is EntityClientPlayerMP)
             {
-                ClientNetworkHandler var1 = ((EntityClientPlayerMP)mc.thePlayer).sendQueue;
-                var1.addToSendQueue(new Packet19EntityAction(mc.thePlayer, 3));
+                ClientNetworkHandler var1 = ((EntityClientPlayerMP)mc.player).sendQueue;
+                var1.addToSendQueue(new Packet19EntityAction(mc.player, 3));
             }
 
         }

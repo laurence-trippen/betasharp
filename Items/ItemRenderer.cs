@@ -20,7 +20,7 @@ namespace betareborn.Items
         public ItemRenderer(Minecraft var1)
         {
             mc = var1;
-            field_28131_f = new MapItemRenderer(var1.fontRenderer, var1.gameSettings, var1.renderEngine);
+            field_28131_f = new MapItemRenderer(var1.fontRenderer, var1.gameSettings, var1.textureManager);
         }
 
         public void renderItem(EntityLiving var1, ItemStack var2)
@@ -28,18 +28,18 @@ namespace betareborn.Items
             GLManager.GL.PushMatrix();
             if (var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.BLOCKS[var2.itemID].getRenderType()))
             {
-                GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture("/terrain.png"));
+                GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture("/terrain.png"));
                 renderBlocksInstance.renderBlockOnInventory(Block.BLOCKS[var2.itemID], var2.getItemDamage(), var1.getEntityBrightness(1.0F));
             }
             else
             {
                 if (var2.itemID < 256)
                 {
-                    GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture("/terrain.png"));
+                    GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture("/terrain.png"));
                 }
                 else
                 {
-                    GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture("/gui/items.png"));
+                    GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture("/gui/items.png"));
                 }
 
                 Tessellator var3 = Tessellator.instance;
@@ -146,7 +146,7 @@ namespace betareborn.Items
         public void renderItemInFirstPerson(float var1)
         {
             float var2 = prevEquippedProgress + (equippedProgress - prevEquippedProgress) * var1;
-            EntityPlayerSP var3 = mc.thePlayer;
+            ClientPlayerEntity var3 = mc.player;
             float var4 = var3.prevRotationPitch + (var3.rotationPitch - var3.prevRotationPitch) * var1;
             GLManager.GL.PushMatrix();
             GLManager.GL.Rotate(var4, 1.0F, 0.0F, 0.0F);
@@ -154,7 +154,7 @@ namespace betareborn.Items
             RenderHelper.enableStandardItemLighting();
             GLManager.GL.PopMatrix();
             ItemStack var5 = itemToRender;
-            float var6 = mc.theWorld.getLuminance(MathHelper.floor_double(var3.posX), MathHelper.floor_double(var3.posY), MathHelper.floor_double(var3.posZ));
+            float var6 = mc.world.getLuminance(MathHelper.floor_double(var3.posX), MathHelper.floor_double(var3.posY), MathHelper.floor_double(var3.posZ));
             float var8;
             float var9;
             float var10;
@@ -197,7 +197,7 @@ namespace betareborn.Items
                 GLManager.GL.Rotate(var8 * -85.0F, 0.0F, 0.0F, 1.0F);
                 GLManager.GL.Enable(GLEnum.RescaleNormal);
                 //TODO: ADD SKINS
-                GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture(mc.thePlayer.getEntityTexture()));
+                GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture(mc.player.getEntityTexture()));
 
                 for (int var17 = 0; var17 < 2; ++var17)
                 {
@@ -208,7 +208,7 @@ namespace betareborn.Items
                     GLManager.GL.Rotate(-90.0F, 0.0F, 0.0F, 1.0F);
                     GLManager.GL.Rotate(59.0F, 0.0F, 0.0F, 1.0F);
                     GLManager.GL.Rotate(-65 * var21, 0.0F, 1.0F, 0.0F);
-                    Render var11 = RenderManager.instance.getEntityRenderObject(mc.thePlayer);
+                    Render var11 = RenderManager.instance.getEntityRenderObject(mc.player);
                     RenderPlayer var12 = (RenderPlayer)var11;
                     float var13 = 1.0F;
                     GLManager.GL.Scale(var13, var13, var13);
@@ -229,7 +229,7 @@ namespace betareborn.Items
                 GLManager.GL.Translate(-1.0F, -1.0F, 0.0F);
                 var10 = 0.015625F;
                 GLManager.GL.Scale(var10, var10, var10);
-                mc.renderEngine.bindTexture(mc.renderEngine.getTexture("/misc/mapbg.png"));
+                mc.textureManager.bindTexture(mc.textureManager.getTexture("/misc/mapbg.png"));
                 Tessellator var19 = Tessellator.instance;
                 GLManager.GL.Normal3(0.0F, 0.0F, -1.0F);
                 var19.startDrawingQuads();
@@ -239,8 +239,8 @@ namespace betareborn.Items
                 var19.addVertexWithUV(128 + var20, 0 - var20, 0.0D, 1.0D, 0.0D);
                 var19.addVertexWithUV(0 - var20, 0 - var20, 0.0D, 0.0D, 0.0D);
                 var19.draw();
-                MapData var22 = Item.mapItem.func_28012_a(var5, mc.theWorld);
-                field_28131_f.func_28157_a(mc.thePlayer, mc.renderEngine, var22);
+                MapData var22 = Item.mapItem.func_28012_a(var5, mc.world);
+                field_28131_f.func_28157_a(mc.player, mc.textureManager, var22);
                 GLManager.GL.PopMatrix();
             }
             else if (var5 != null)
@@ -287,14 +287,14 @@ namespace betareborn.Items
                 GLManager.GL.Rotate(var10 * 70.0F, 0.0F, 1.0F, 0.0F);
                 GLManager.GL.Rotate(-var9 * 20.0F, 0.0F, 0.0F, 1.0F);
                 //TODO: ADD SKIN
-                GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture(mc.thePlayer.getEntityTexture()));
+                GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture(mc.player.getEntityTexture()));
                 GLManager.GL.Translate(-1.0F, 3.6F, 3.5F);
                 GLManager.GL.Rotate(120.0F, 0.0F, 0.0F, 1.0F);
                 GLManager.GL.Rotate(200.0F, 1.0F, 0.0F, 0.0F);
                 GLManager.GL.Rotate(-135.0F, 0.0F, 1.0F, 0.0F);
                 GLManager.GL.Scale(1.0F, 1.0F, 1.0F);
                 GLManager.GL.Translate(5.6F, 0.0F, 0.0F);
-                Render var15 = RenderManager.instance.getEntityRenderObject(mc.thePlayer);
+                Render var15 = RenderManager.instance.getEntityRenderObject(mc.player);
                 RenderPlayer var16 = (RenderPlayer)var15;
                 var10 = 1.0F;
                 GLManager.GL.Scale(var10, var10, var10);
@@ -310,22 +310,22 @@ namespace betareborn.Items
         {
             GLManager.GL.Disable(GLEnum.AlphaTest);
             int var2;
-            if (mc.thePlayer.isBurning())
+            if (mc.player.isBurning())
             {
-                var2 = mc.renderEngine.getTexture("/terrain.png");
+                var2 = mc.textureManager.getTexture("/terrain.png");
                 GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)var2);
                 renderFireInFirstPerson(var1);
             }
 
-            if (mc.thePlayer.isInsideWall())
+            if (mc.player.isInsideWall())
             {
-                var2 = MathHelper.floor_double(mc.thePlayer.posX);
-                int var3 = MathHelper.floor_double(mc.thePlayer.posY);
-                int var4 = MathHelper.floor_double(mc.thePlayer.posZ);
-                int var5 = mc.renderEngine.getTexture("/terrain.png");
+                var2 = MathHelper.floor_double(mc.player.posX);
+                int var3 = MathHelper.floor_double(mc.player.posY);
+                int var4 = MathHelper.floor_double(mc.player.posZ);
+                int var5 = mc.textureManager.getTexture("/terrain.png");
                 GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)var5);
-                int var6 = mc.theWorld.getBlockId(var2, var3, var4);
-                if (mc.theWorld.shouldSuffocate(var2, var3, var4))
+                int var6 = mc.world.getBlockId(var2, var3, var4);
+                if (mc.world.shouldSuffocate(var2, var3, var4))
                 {
                     renderInsideOfBlock(var1, Block.BLOCKS[var6].getTexture(2));
                 }
@@ -333,15 +333,15 @@ namespace betareborn.Items
                 {
                     for (int var7 = 0; var7 < 8; ++var7)
                     {
-                        float var8 = ((var7 >> 0) % 2 - 0.5F) * mc.thePlayer.width * 0.9F;
-                        float var9 = ((var7 >> 1) % 2 - 0.5F) * mc.thePlayer.height * 0.2F;
-                        float var10 = ((var7 >> 2) % 2 - 0.5F) * mc.thePlayer.width * 0.9F;
+                        float var8 = ((var7 >> 0) % 2 - 0.5F) * mc.player.width * 0.9F;
+                        float var9 = ((var7 >> 1) % 2 - 0.5F) * mc.player.height * 0.2F;
+                        float var10 = ((var7 >> 2) % 2 - 0.5F) * mc.player.width * 0.9F;
                         int var11 = MathHelper.floor_float(var2 + var8);
                         int var12 = MathHelper.floor_float(var3 + var9);
                         int var13 = MathHelper.floor_float(var4 + var10);
-                        if (mc.theWorld.shouldSuffocate(var11, var12, var13))
+                        if (mc.world.shouldSuffocate(var11, var12, var13))
                         {
-                            var6 = mc.theWorld.getBlockId(var11, var12, var13);
+                            var6 = mc.world.getBlockId(var11, var12, var13);
                         }
                     }
                 }
@@ -352,9 +352,9 @@ namespace betareborn.Items
                 }
             }
 
-            if (mc.thePlayer.isInsideOfMaterial(Material.WATER))
+            if (mc.player.isInsideOfMaterial(Material.WATER))
             {
-                var2 = mc.renderEngine.getTexture("/misc/water.png");
+                var2 = mc.textureManager.getTexture("/misc/water.png");
                 GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)var2);
                 renderWarpedTextureOverlay(var1);
             }
@@ -365,7 +365,7 @@ namespace betareborn.Items
         private void renderInsideOfBlock(float var1, int var2)
         {
             Tessellator var3 = Tessellator.instance;
-            mc.thePlayer.getEntityBrightness(var1);
+            mc.player.getEntityBrightness(var1);
             float var4 = 0.1F;
             GLManager.GL.Color4(var4, var4, var4, 0.5F);
             GLManager.GL.PushMatrix();
@@ -392,7 +392,7 @@ namespace betareborn.Items
         private void renderWarpedTextureOverlay(float var1)
         {
             Tessellator var2 = Tessellator.instance;
-            float var3 = mc.thePlayer.getEntityBrightness(var1);
+            float var3 = mc.player.getEntityBrightness(var1);
             GLManager.GL.Color4(var3, var3, var3, 0.5F);
             GLManager.GL.Enable(GLEnum.Blend);
             GLManager.GL.BlendFunc(GLEnum.SrcAlpha, GLEnum.OneMinusSrcAlpha);
@@ -403,8 +403,8 @@ namespace betareborn.Items
             float var7 = -1.0F;
             float var8 = 1.0F;
             float var9 = -0.5F;
-            float var10 = -mc.thePlayer.rotationYaw / 64.0F;
-            float var11 = mc.thePlayer.rotationPitch / 64.0F;
+            float var10 = -mc.player.rotationYaw / 64.0F;
+            float var11 = mc.player.rotationPitch / 64.0F;
             var2.startDrawingQuads();
             var2.addVertexWithUV((double)var5, (double)var7, (double)var9, (double)(var4 + var10), (double)(var4 + var11));
             var2.addVertexWithUV((double)var6, (double)var7, (double)var9, (double)(0.0F + var10), (double)(var4 + var11));
@@ -457,7 +457,7 @@ namespace betareborn.Items
         public void updateEquippedItem()
         {
             prevEquippedProgress = equippedProgress;
-            EntityPlayerSP var1 = mc.thePlayer;
+            ClientPlayerEntity var1 = mc.player;
             ItemStack var2 = var1.inventory.getCurrentItem();
             bool var4 = field_20099_f == var1.inventory.currentItem && var2 == itemToRender;
             if (itemToRender == null && var2 == null)

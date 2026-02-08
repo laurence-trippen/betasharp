@@ -29,7 +29,7 @@ namespace betareborn.Client.Guis
         public override void onGuiClosed()
         {
             Keyboard.enableRepeatEvents(false);
-            if (mc.theWorld.isRemote)
+            if (mc.world.isRemote)
             {
                 mc.getSendQueue().addToSendQueue(new UpdateSignPacket(entitySign.x, entitySign.y, entitySign.z, entitySign.texts));
             }

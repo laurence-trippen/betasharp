@@ -29,7 +29,7 @@ namespace betareborn.Client.Guis
 
         public void func_25087_a(float var1)
         {
-            field_25089_b.renderEngine.bindTexture(field_25089_b.renderEngine.getTexture("/gui/particles.png"));
+            field_25089_b.textureManager.bindTexture(field_25089_b.textureManager.getTexture("/gui/particles.png"));
 
             for (int var2 = 0; var2 < field_25090_a.size(); ++var2)
             {

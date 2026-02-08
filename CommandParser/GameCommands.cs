@@ -44,7 +44,7 @@ public class GameCommands
     [MinecraftCommand("clear", description: "clears inventory")]
     public void ClearInventory(CommandContext ctx)
     {
-        var inventory = ctx.Game.thePlayer.inventory.mainInventory;
+        var inventory = ctx.Game.player.inventory.mainInventory;
         for (int i = 0; i < inventory.Length; i++)
         {
             inventory[i] = null;
@@ -63,7 +63,7 @@ public class GameCommands
 
             if (count == -1) finalCount = items.TryGetValue(itemId, out var item) ? item.maxStackSize : 64;
 
-            ctx.Game.thePlayer.inventory.addItemStackToInventory(new ItemStack(id: itemId, count: finalCount));
+            ctx.Game.player.inventory.addItemStackToInventory(new ItemStack(id: itemId, count: finalCount));
             ctx.Reply($"Gave {finalCount} of {itemName}");
         }
         else
@@ -76,7 +76,7 @@ public class GameCommands
     [MinecraftCommand("heal", description: "heals player", usage: "/heal <optional number>")]
     public void Heal(CommandContext ctx, int amount = 20)
     {
-        ctx.Game.thePlayer.heal(amount);
+        ctx.Game.player.heal(amount);
     }
 
     [MinecraftCommand("settime", aliases: "time", description: "sets time", usage: "/settime <sunrise|dawn|morning|noon|sunset|night|midnight>\n/settime <number>")]
@@ -95,7 +95,7 @@ public class GameCommands
 
         if (timeToSet.HasValue)
         {
-            ctx.Game.theWorld.setWorldTime(timeToSet.Value);
+            ctx.Game.world.setWorldTime(timeToSet.Value);
             ctx.Reply($"Time set to {timeValue} ({timeToSet.Value})");
         }
         else
@@ -107,14 +107,14 @@ public class GameCommands
     [MinecraftCommand("teleport", aliases: "tp", description: "teleports player", usage: "/teleport <x> <y> <z>")]
     public void Teleport(CommandContext ctx, float x, float y, float z)
     {
-        ctx.Game.thePlayer.setPosition(x, y, z);
+        ctx.Game.player.setPosition(x, y, z);
     }
 
     [MinecraftCommand("summon", aliases: "spawn", description: "spawns mobs", usage: "/summon <entity name>")]
     public void Summon(CommandContext ctx, string name)
     {
-        var p = ctx.Game.thePlayer;
-        var ent = EntityRegistry.createEntityAt(name, ctx.Game.theWorld, (float)p.posX, (float)p.posY, (float)p.posZ);
+        var p = ctx.Game.player;
+        var ent = EntityRegistry.createEntityAt(name, ctx.Game.world, (float)p.posX, (float)p.posY, (float)p.posZ);
 
         if (ent == null)
         {
@@ -130,22 +130,22 @@ public class GameCommands
         {
             case "clear":
                 {
-                    ctx.Game.theWorld.weatherEffects.clear();
-                    ctx.Game.theWorld.getWorldInfo().setRaining(false);
-                    ctx.Game.theWorld.getWorldInfo().setThundering(false);
+                    ctx.Game.world.weatherEffects.clear();
+                    ctx.Game.world.getWorldInfo().setRaining(false);
+                    ctx.Game.world.getWorldInfo().setThundering(false);
                     Console.WriteLine("Clear Weather");
                     break;
                 }
             case "rain":
                 {
-                    ctx.Game.theWorld.getWorldInfo().setRaining(true);
-                    ctx.Game.theWorld.getWorldInfo().setThundering(false);
+                    ctx.Game.world.getWorldInfo().setRaining(true);
+                    ctx.Game.world.getWorldInfo().setThundering(false);
                     break;
                 }
             case "storm":
                 {
-                    ctx.Game.theWorld.getWorldInfo().setRaining(true);
-                    ctx.Game.theWorld.getWorldInfo().setThundering(true);
+                    ctx.Game.world.getWorldInfo().setRaining(true);
+                    ctx.Game.world.getWorldInfo().setThundering(true);
                     break;
                 }
         }
@@ -154,7 +154,7 @@ public class GameCommands
     [MinecraftCommand("killall", description: "kills specifed mobs", usage: "/killall <all|living|monster|animal|item|tnt>\n/killall <entiny name>")]
     public void KillAll(CommandContext ctx, string filter = "all")
     {
-        var world = ctx.Game.theWorld;
+        var world = ctx.Game.world;
         var entities = new List<Entity>(world.loadedEntityList);
         int count = 0;
         filter = filter.ToLower();

@@ -39,11 +39,11 @@ namespace betareborn.Client.Textures
         public override void onTick()
         {
             double var1 = 0.0D;
-            if (mc.theWorld != null && mc.thePlayer != null)
+            if (mc.world != null && mc.player != null)
             {
-                float var3 = mc.theWorld.getCelestialAngle(1.0F);
+                float var3 = mc.world.getCelestialAngle(1.0F);
                 var1 = (double)(-var3 * (float)Math.PI * 2.0F);
-                if (mc.theWorld.dimension.isNether)
+                if (mc.world.dimension.isNether)
                 {
                     var1 = java.lang.Math.random() * (double)(float)Math.PI * 2.0D;
                 }

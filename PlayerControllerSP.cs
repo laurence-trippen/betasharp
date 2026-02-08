@@ -26,24 +26,24 @@ namespace betareborn
 
         public override bool sendBlockRemoved(int var1, int var2, int var3, int var4)
         {
-            int var5 = mc.theWorld.getBlockId(var1, var2, var3);
-            int var6 = mc.theWorld.getBlockMeta(var1, var2, var3);
+            int var5 = mc.world.getBlockId(var1, var2, var3);
+            int var6 = mc.world.getBlockMeta(var1, var2, var3);
             bool var7 = base.sendBlockRemoved(var1, var2, var3, var4);
-            ItemStack var8 = mc.thePlayer.getHand();
-            bool var9 = mc.thePlayer.canHarvest(Block.BLOCKS[var5]);
+            ItemStack var8 = mc.player.getHand();
+            bool var9 = mc.player.canHarvest(Block.BLOCKS[var5]);
             if (var8 != null)
             {
-                var8.onDestroyBlock(var5, var1, var2, var3, mc.thePlayer);
+                var8.onDestroyBlock(var5, var1, var2, var3, mc.player);
                 if (var8.count == 0)
                 {
-                    var8.onRemoved(mc.thePlayer);
-                    mc.thePlayer.clearStackInHand();
+                    var8.onRemoved(mc.player);
+                    mc.player.clearStackInHand();
                 }
             }
 
             if (var7 && var9)
             {
-                Block.BLOCKS[var5].afterBreak(mc.theWorld, mc.thePlayer, var1, var2, var3, var6);
+                Block.BLOCKS[var5].afterBreak(mc.world, mc.player, var1, var2, var3, var6);
             }
 
             return var7;
@@ -51,14 +51,14 @@ namespace betareborn
 
         public override void clickBlock(int var1, int var2, int var3, int var4)
         {
-            mc.theWorld.onBlockHit(mc.thePlayer, var1, var2, var3, var4);
-            int var5 = mc.theWorld.getBlockId(var1, var2, var3);
+            mc.world.onBlockHit(mc.player, var1, var2, var3, var4);
+            int var5 = mc.world.getBlockId(var1, var2, var3);
             if (var5 > 0 && curBlockDamage == 0.0F)
             {
-                Block.BLOCKS[var5].onBlockBreakStart(mc.theWorld, var1, var2, var3, mc.thePlayer);
+                Block.BLOCKS[var5].onBlockBreakStart(mc.world, var1, var2, var3, mc.player);
             }
 
-            if (var5 > 0 && Block.BLOCKS[var5].getHardness(mc.thePlayer) >= 1.0F)
+            if (var5 > 0 && Block.BLOCKS[var5].getHardness(mc.player) >= 1.0F)
             {
                 sendBlockRemoved(var1, var2, var3, var4);
             }
@@ -81,14 +81,14 @@ namespace betareborn
             {
                 if (var1 == field_1074_c && var2 == field_1073_d && var3 == field_1072_e)
                 {
-                    int var5 = mc.theWorld.getBlockId(var1, var2, var3);
+                    int var5 = mc.world.getBlockId(var1, var2, var3);
                     if (var5 == 0)
                     {
                         return;
                     }
 
                     Block var6 = Block.BLOCKS[var5];
-                    curBlockDamage += var6.getHardness(mc.thePlayer);
+                    curBlockDamage += var6.getHardness(mc.player);
                     if (field_1069_h % 4.0F == 0.0F && var6 != null)
                     {
                         mc.sndManager.playSound(var6.soundGroup.func_1145_d(), (float)var1 + 0.5F, (float)var2 + 0.5F, (float)var3 + 0.5F, (var6.soundGroup.getVolume() + 1.0F) / 8.0F, var6.soundGroup.getPitch() * 0.5F);

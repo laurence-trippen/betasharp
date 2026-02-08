@@ -21,13 +21,13 @@ namespace betareborn
 
         public virtual void clickBlock(int var1, int var2, int var3, int var4)
         {
-            mc.theWorld.onBlockHit(mc.thePlayer, var1, var2, var3, var4);
+            mc.world.onBlockHit(mc.player, var1, var2, var3, var4);
             sendBlockRemoved(var1, var2, var3, var4);
         }
 
         public virtual bool sendBlockRemoved(int var1, int var2, int var3, int var4)
         {
-            World var5 = mc.theWorld;
+            World var5 = mc.world;
             Block var6 = Block.BLOCKS[var5.getBlockId(var1, var2, var3)];
             var5.worldEvent(2001, var1, var2, var3, var6.id + var5.getBlockMeta(var1, var2, var3) * 256);
             int var7 = var5.getBlockMeta(var1, var2, var3);
@@ -102,7 +102,7 @@ namespace betareborn
 
         public virtual EntityPlayer createPlayer(World var1)
         {
-            return new EntityPlayerSP(mc, var1, mc.session, var1.dimension.id);
+            return new ClientPlayerEntity(mc, var1, mc.session, var1.dimension.id);
         }
 
         public virtual void interactWithEntity(EntityPlayer var1, Entity var2)

@@ -24,7 +24,7 @@ namespace betareborn.Client.Guis
         public override void initGui()
         {
             base.initGui();
-            mc.thePlayer.craftingInventory = inventorySlots;
+            mc.player.craftingInventory = inventorySlots;
         }
 
         public override void drawScreen(int var1, int var2, float var3)
@@ -62,12 +62,12 @@ namespace betareborn.Client.Guis
                 }
             }
 
-            InventoryPlayer var12 = mc.thePlayer.inventory;
+            InventoryPlayer var12 = mc.player.inventory;
             if (var12.getItemStack() != null)
             {
                 GLManager.GL.Translate(0.0F, 0.0F, 32.0F);
-                itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, var12.getItemStack(), var1 - var4 - 8, var2 - var5 - 8);
-                itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, var12.getItemStack(), var1 - var4 - 8, var2 - var5 - 8);
+                itemRenderer.renderItemIntoGUI(fontRenderer, mc.textureManager, var12.getItemStack(), var1 - var4 - 8, var2 - var5 - 8);
+                itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.textureManager, var12.getItemStack(), var1 - var4 - 8, var2 - var5 - 8);
             }
 
             GLManager.GL.Disable(GLEnum.RescaleNormal);
@@ -111,15 +111,15 @@ namespace betareborn.Client.Guis
                 if (var5 >= 0)
                 {
                     GLManager.GL.Disable(GLEnum.Lighting);
-                    mc.renderEngine.bindTexture(mc.renderEngine.getTexture("/gui/items.png"));
+                    mc.textureManager.bindTexture(mc.textureManager.getTexture("/gui/items.png"));
                     drawTexturedModalRect(var2, var3, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
                     GLManager.GL.Enable(GLEnum.Lighting);
                     return;
                 }
             }
 
-            itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, var4, var2, var3);
-            itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, var4, var2, var3);
+            itemRenderer.renderItemIntoGUI(fontRenderer, mc.textureManager, var4, var2, var3);
+            itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.textureManager, var4, var2, var3);
         }
 
         private Slot getSlotAtPosition(int var1, int var2)
@@ -168,7 +168,7 @@ namespace betareborn.Client.Guis
                 if (var8 != -1)
                 {
                     bool var9 = var8 != -999 && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
-                    mc.playerController.func_27174_a(inventorySlots.syncId, var8, var3, var9, mc.thePlayer);
+                    mc.playerController.func_27174_a(inventorySlots.syncId, var8, var3, var9, mc.player);
                 }
             }
 
@@ -186,16 +186,16 @@ namespace betareborn.Client.Guis
         {
             if (eventKey == 1 || eventKey == mc.gameSettings.keyBindInventory.keyCode)
             {
-                mc.thePlayer.closeScreen();
+                mc.player.closeScreen();
             }
 
         }
 
         public override void onGuiClosed()
         {
-            if (mc.thePlayer != null)
+            if (mc.player != null)
             {
-                mc.playerController.func_20086_a(inventorySlots.syncId, mc.thePlayer);
+                mc.playerController.func_20086_a(inventorySlots.syncId, mc.player);
             }
         }
 
@@ -207,9 +207,9 @@ namespace betareborn.Client.Guis
         public override void updateScreen()
         {
             base.updateScreen();
-            if (!mc.thePlayer.isEntityAlive() || mc.thePlayer.isDead)
+            if (!mc.player.isEntityAlive() || mc.player.isDead)
             {
-                mc.thePlayer.closeScreen();
+                mc.player.closeScreen();
             }
 
         }

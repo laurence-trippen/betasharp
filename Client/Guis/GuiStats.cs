@@ -104,7 +104,7 @@ namespace betareborn.Client.Guis
             GLManager.GL.Rotate(180.0F, 1.0F, 0.0F, 0.0F);
             RenderHelper.enableStandardItemLighting();
             GLManager.GL.PopMatrix();
-            field_27153_j.drawItemIntoGui(fontRenderer, mc.renderEngine, var3, 0, Item.itemsList[var3].getIconFromDamage(0), var1 + 2, var2 + 2);
+            field_27153_j.drawItemIntoGui(fontRenderer, mc.textureManager, var3, 0, Item.itemsList[var3].getIconFromDamage(0), var1 + 2, var2 + 2);
             RenderHelper.disableStandardItemLighting();
             GLManager.GL.Disable(GLEnum.RescaleNormal);
         }
@@ -116,9 +116,9 @@ namespace betareborn.Client.Guis
 
         private void func_27136_c(int var1, int var2, int var3, int var4)
         {
-            int var5 = mc.renderEngine.getTexture("/gui/slot.png");
+            int var5 = mc.textureManager.getTexture("/gui/slot.png");
             GLManager.GL.Color4(1.0F, 1.0F, 1.0F, 1.0F);
-            mc.renderEngine.bindTexture(var5);
+            mc.textureManager.bindTexture(var5);
             Tessellator var10 = Tessellator.instance;
             var10.startDrawingQuads();
             var10.addVertexWithUV(var1 + 0, var2 + 18, zLevel, (double)((var3 + 0) * 0.0078125F), (double)((var4 + 18) * 0.0078125F));

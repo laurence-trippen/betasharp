@@ -4,7 +4,6 @@ using betareborn.Blocks;
 using betareborn.Client;
 using betareborn.Client.Colors;
 using betareborn.Client.Guis;
-using betareborn.Client.Models;
 using betareborn.Client.Network;
 using betareborn.Client.Rendering;
 using betareborn.Client.Resource.Pack;
@@ -33,28 +32,28 @@ namespace betareborn
 {
     public class Minecraft : java.lang.Object, Runnable
     {
-        public static Minecraft theMinecraft;
+        public static Minecraft INSTANCE;
         public PlayerController playerController;
         private bool fullscreen = false;
         private bool hasCrashed = false;
         public int displayWidth;
         public int displayHeight;
         private Timer timer = new Timer(20.0F);
-        public World theWorld;
+        public World world;
         public RenderGlobal renderGlobal;
-        public EntityPlayerSP thePlayer;
-        public EntityLiving renderViewEntity;
-        public EffectRenderer effectRenderer;
+        public ClientPlayerEntity player;
+        public EntityLiving camera;
+        public ParticleManager particleManager;
         public Session session = null;
         public string minecraftUri;
         public bool hideQuitButton = false;
         public volatile bool isGamePaused = false;
-        public TextureManager renderEngine;
+        public TextureManager textureManager;
         public FontRenderer fontRenderer;
         public GuiScreen currentScreen = null;
         public LoadingScreenRenderer loadingScreen;
 
-        public EntityRenderer entityRenderer;
+        public GameRenderer gameRenderer;
 
         //private ThreadDownloadResources downloadResourcesThread;
         private int ticksRan = 0;
@@ -64,7 +63,6 @@ namespace betareborn
         public GuiAchievement guiAchievement;
         public GuiIngame ingameGUI;
         public bool skipRenderWorld = false;
-        public ModelBiped field_9242_w = new ModelBiped(0.0F);
         public HitResult objectMouseOver = null;
         public GameSettings gameSettings;
         public SoundManager sndManager = new SoundManager();
@@ -107,7 +105,7 @@ namespace betareborn
             fullscreen = var6;
             //hideQuitButton = false;
 
-            theMinecraft = this;
+            INSTANCE = this;
         }
 
         public void onMinecraftCrash(UnexpectedThrowable var1)
@@ -168,12 +166,12 @@ namespace betareborn
                 Console.WriteLine(var6);
             }
             texturePackList = new TexturePacks(this, mcDataDir);
-            renderEngine = new TextureManager(texturePackList, gameSettings);
-            fontRenderer = new FontRenderer(gameSettings, renderEngine);
-            WaterColors.setcolorMap(renderEngine.func_28149_a("/misc/watercolor.png"));
-            GrassColors.func_28181_a(renderEngine.func_28149_a("/misc/grasscolor.png"));
-            FoliageColors.func_28152_a(renderEngine.func_28149_a("/misc/foliagecolor.png"));
-            entityRenderer = new EntityRenderer(this);
+            textureManager = new TextureManager(texturePackList, gameSettings);
+            fontRenderer = new FontRenderer(gameSettings, textureManager);
+            WaterColors.setcolorMap(textureManager.func_28149_a("/misc/watercolor.png"));
+            GrassColors.func_28181_a(textureManager.func_28149_a("/misc/grasscolor.png"));
+            FoliageColors.func_28152_a(textureManager.func_28149_a("/misc/foliagecolor.png"));
+            gameRenderer = new GameRenderer(this);
             RenderManager.instance.itemRenderer = new ItemRenderer(this);
             statFileWriter = new StatFileWriter(session, mcDataDir);
             Achievements.OPEN_INVENTORY.setStatStringFormatter(new StatStringFormatKeyInv(this));
@@ -224,18 +222,18 @@ namespace betareborn
             GLManager.GL.MatrixMode(GLEnum.Modelview);
             checkGLError("Startup");
             sndManager.loadSoundSettings(gameSettings);
-            renderEngine.registerTextureFX(textureLavaFX);
-            renderEngine.registerTextureFX(textureWaterFX);
-            renderEngine.registerTextureFX(new TexturePortalFX());
-            renderEngine.registerTextureFX(new TextureCompassFX(this));
-            renderEngine.registerTextureFX(new TextureWatchFX(this));
-            renderEngine.registerTextureFX(new TextureWaterFlowFX());
-            renderEngine.registerTextureFX(new TextureLavaFlowFX());
-            renderEngine.registerTextureFX(new TextureFlamesFX(0));
-            renderEngine.registerTextureFX(new TextureFlamesFX(1));
-            renderGlobal = new RenderGlobal(this, renderEngine);
+            textureManager.registerTextureFX(textureLavaFX);
+            textureManager.registerTextureFX(textureWaterFX);
+            textureManager.registerTextureFX(new TexturePortalFX());
+            textureManager.registerTextureFX(new TextureCompassFX(this));
+            textureManager.registerTextureFX(new TextureWatchFX(this));
+            textureManager.registerTextureFX(new TextureWaterFlowFX());
+            textureManager.registerTextureFX(new TextureLavaFlowFX());
+            textureManager.registerTextureFX(new TextureFlamesFX(0));
+            textureManager.registerTextureFX(new TextureFlamesFX(1));
+            renderGlobal = new RenderGlobal(this, textureManager);
             GLManager.GL.Viewport(0, 0, (uint)displayWidth, (uint)displayHeight);
-            effectRenderer = new EffectRenderer(theWorld, renderEngine);
+            particleManager = new ParticleManager(world, textureManager);
 
             //try
             //{
@@ -275,7 +273,7 @@ namespace betareborn
             GLManager.GL.Disable(GLEnum.Lighting);
             GLManager.GL.Enable(GLEnum.Texture2D);
             GLManager.GL.Disable(GLEnum.Fog);
-            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)renderEngine.getTexture("/title/mojang.png"));
+            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)textureManager.getTexture("/title/mojang.png"));
             var2.startDrawingQuads();
             var2.setColorOpaque_I(16777215);
             var2.addVertexWithUV(0.0D, (double)displayHeight, 0.0D, 0.0D, 0.0D);
@@ -398,11 +396,11 @@ namespace betareborn
                 }
 
                 statFileWriter.syncStats();
-                if (var1 == null && theWorld == null)
+                if (var1 == null && world == null)
                 {
                     var1 = new GuiMainMenu();
                 }
-                else if (var1 == null && thePlayer.health <= 0)
+                else if (var1 == null && player.health <= 0)
                 {
                     var1 = new GuiGameOver();
                 }
@@ -530,7 +528,7 @@ namespace betareborn
                             shutdown();
                         }
 
-                        if (isGamePaused && theWorld != null)
+                        if (isGamePaused && world != null)
                         {
                             float var4 = timer.renderPartialTicks;
                             timer.updateTimer();
@@ -557,7 +555,7 @@ namespace betareborn
                             }
                             catch (MinecraftException var16)
                             {
-                                theWorld = null;
+                                world = null;
                                 changeWorld1((World)null);
                                 displayGuiScreen(new GuiConflictWarning());
                             }
@@ -571,12 +569,12 @@ namespace betareborn
                         long var24 = java.lang.System.nanoTime() - var23;
                         checkGLError("Pre render");
                         RenderBlocks.fancyGrass = true;
-                        sndManager.func_338_a(thePlayer, timer.renderPartialTicks);
+                        sndManager.func_338_a(player, timer.renderPartialTicks);
                         GLManager.GL.Enable(GLEnum.Texture2D);
-                        if (theWorld != null)
+                        if (world != null)
                         {
                             if (gameSettings.debugMode) Profiler.Start("updateLighting");
-                            theWorld.updatingLighting();
+                            world.updatingLighting();
                             if (gameSettings.debugMode) Profiler.Stop("updateLighting");
                         }
 
@@ -585,7 +583,7 @@ namespace betareborn
                             Display.update();
                         }
 
-                        if (thePlayer != null && thePlayer.isInsideWall())
+                        if (player != null && player.isInsideWall())
                         {
                             gameSettings.thirdPersonView = false;
                         }
@@ -598,7 +596,7 @@ namespace betareborn
                             }
 
                             if (gameSettings.debugMode) Profiler.PushGroup("render");
-                            entityRenderer.updateCameraAndRender(timer.renderPartialTicks);
+                            gameRenderer.onFrameUpdate(timer.renderPartialTicks);
                             if (gameSettings.debugMode) Profiler.PopGroup();
                         }
 
@@ -687,7 +685,7 @@ namespace betareborn
                     }
                     catch (MinecraftException var18)
                     {
-                        theWorld = null;
+                        world = null;
                         changeWorld1((World)null);
                         displayGuiScreen(new GuiConflictWarning());
                     }
@@ -875,9 +873,9 @@ namespace betareborn
         {
             if (inGameHasFocus)
             {
-                if (thePlayer != null)
+                if (player != null)
                 {
-                    thePlayer.resetPlayerKeyState();
+                    player.resetPlayerKeyState();
                 }
 
                 inGameHasFocus = false;
@@ -911,7 +909,7 @@ namespace betareborn
                         int var4 = objectMouseOver.blockY;
                         int var5 = objectMouseOver.blockZ;
                         playerController.sendBlockRemoving(var3, var4, var5, objectMouseOver.side);
-                        effectRenderer.addBlockHitEffects(var3, var4, var5, objectMouseOver.side);
+                        particleManager.addBlockHitEffects(var3, var4, var5, objectMouseOver.side);
                     }
                     else
                     {
@@ -927,7 +925,7 @@ namespace betareborn
             {
                 if (var1 == 0)
                 {
-                    thePlayer.swingHand();
+                    player.swingHand();
                 }
 
                 bool var2 = true;
@@ -942,12 +940,12 @@ namespace betareborn
                 {
                     if (var1 == 0)
                     {
-                        playerController.attackEntity(thePlayer, objectMouseOver.entity);
+                        playerController.attackEntity(player, objectMouseOver.entity);
                     }
 
                     if (var1 == 1)
                     {
-                        playerController.interactWithEntity(thePlayer, objectMouseOver.entity);
+                        playerController.interactWithEntity(player, objectMouseOver.entity);
                     }
                 }
                 else if (objectMouseOver.type == HitResultType.TILE)
@@ -962,12 +960,12 @@ namespace betareborn
                     }
                     else
                     {
-                        ItemStack var7 = thePlayer.inventory.getCurrentItem();
+                        ItemStack var7 = player.inventory.getCurrentItem();
                         int var8 = var7 != null ? var7.count : 0;
-                        if (playerController.sendPlaceBlock(thePlayer, theWorld, var7, var3, var4, var5, var6))
+                        if (playerController.sendPlaceBlock(player, world, var7, var3, var4, var5, var6))
                         {
                             var2 = false;
-                            thePlayer.swingHand();
+                            player.swingHand();
                         }
 
                         if (var7 == null)
@@ -977,21 +975,21 @@ namespace betareborn
 
                         if (var7.count == 0)
                         {
-                            thePlayer.inventory.mainInventory[thePlayer.inventory.currentItem] = null;
+                            player.inventory.mainInventory[player.inventory.currentItem] = null;
                         }
                         else if (var7.count != var8)
                         {
-                            entityRenderer.itemRenderer.func_9449_b();
+                            gameRenderer.itemRenderer.func_9449_b();
                         }
                     }
                 }
 
                 if (var2 && var1 == 1)
                 {
-                    ItemStack var9 = thePlayer.inventory.getCurrentItem();
-                    if (var9 != null && playerController.sendUseItem(thePlayer, theWorld, var9))
+                    ItemStack var9 = player.inventory.getCurrentItem();
+                    if (var9 != null && playerController.sendUseItem(player, world, var9))
                     {
-                        entityRenderer.itemRenderer.func_9450_c();
+                        gameRenderer.itemRenderer.func_9450_c();
                     }
                 }
             }
@@ -1076,7 +1074,7 @@ namespace betareborn
         {
             if (objectMouseOver != null)
             {
-                int var1 = theWorld.getBlockId(objectMouseOver.blockX, objectMouseOver.blockY, objectMouseOver.blockZ);
+                int var1 = world.getBlockId(objectMouseOver.blockX, objectMouseOver.blockY, objectMouseOver.blockZ);
                 if (var1 == Block.GRASS_BLOCK.id)
                 {
                     var1 = Block.DIRT.id;
@@ -1092,7 +1090,7 @@ namespace betareborn
                     var1 = Block.STONE.id;
                 }
 
-                thePlayer.inventory.setCurrentItem(var1, playerController is PlayerControllerTest);
+                player.inventory.setCurrentItem(var1, playerController is PlayerControllerTest);
             }
         }
 
@@ -1115,18 +1113,18 @@ namespace betareborn
             Profiler.Start("ingameGUI.updateTick");
             ingameGUI.updateTick();
             Profiler.Stop("ingameGUI.updateTick");
-            entityRenderer.getMouseOver(1.0F);
+            gameRenderer.updateTargetedEntity(1.0F);
 
             AsyncIO.tick();
 
-            entityRenderer.tick(partialTicks);
+            gameRenderer.tick(partialTicks);
 
             Profiler.Start("chunkProviderLoadOrGenerateSetCurrentChunkOver");
 
             Profiler.Stop("chunkProviderLoadOrGenerateSetCurrentChunkOver");
 
             Profiler.Start("playerControllerUpdate");
-            if (!isGamePaused && theWorld != null)
+            if (!isGamePaused && world != null)
             {
                 playerController.updateController();
             }
@@ -1134,26 +1132,26 @@ namespace betareborn
             Profiler.Stop("playerControllerUpdate");
 
             Profiler.Start("updateDynamicTextures");
-            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)renderEngine.getTexture("/terrain.png"));
+            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)textureManager.getTexture("/terrain.png"));
             if (!isGamePaused)
             {
-                renderEngine.updateDynamicTextures();
+                textureManager.updateDynamicTextures();
             }
 
             Profiler.Stop("updateDynamicTextures");
 
-            if (currentScreen == null && thePlayer != null)
+            if (currentScreen == null && player != null)
             {
-                if (thePlayer.health <= 0)
+                if (player.health <= 0)
                 {
                     displayGuiScreen((GuiScreen)null);
                 }
-                else if (thePlayer.isSleeping() && theWorld != null && theWorld.isRemote)
+                else if (player.isSleeping() && world != null && world.isRemote)
                 {
                     displayGuiScreen(new GuiSleepMP());
                 }
             }
-            else if (currentScreen != null && currentScreen is GuiSleepMP && !thePlayer.isSleeping())
+            else if (currentScreen != null && currentScreen is GuiSleepMP && !player.isSleeping())
             {
                 displayGuiScreen((GuiScreen)null);
             }
@@ -1179,28 +1177,28 @@ namespace betareborn
                 processInputEvents();
             }
 
-            if (theWorld != null)
+            if (world != null)
             {
-                if (thePlayer != null)
+                if (player != null)
                 {
                     ++joinPlayerCounter;
                     if (joinPlayerCounter == 30)
                     {
                         joinPlayerCounter = 0;
-                        theWorld.joinEntityInSurroundings(thePlayer);
+                        world.joinEntityInSurroundings(player);
                     }
                 }
 
-                theWorld.difficulty = gameSettings.difficulty;
-                if (theWorld.isRemote)
+                world.difficulty = gameSettings.difficulty;
+                if (world.isRemote)
                 {
-                    theWorld.difficulty = 3;
+                    world.difficulty = 3;
                 }
 
                 Profiler.Start("entityRendererUpdate");
                 if (!isGamePaused)
                 {
-                    entityRenderer.updateRenderer();
+                    gameRenderer.updateCamera();
                 }
 
                 Profiler.Stop("entityRendererUpdate");
@@ -1213,12 +1211,12 @@ namespace betareborn
                 Profiler.PushGroup("theWorldUpdateEntities");
                 if (!isGamePaused)
                 {
-                    if (theWorld.field_27172_i > 0)
+                    if (world.field_27172_i > 0)
                     {
-                        --theWorld.field_27172_i;
+                        --world.field_27172_i;
                     }
 
-                    theWorld.updateEntities();
+                    world.updateEntities();
                 }
 
                 Profiler.PopGroup();
@@ -1226,7 +1224,7 @@ namespace betareborn
                 Profiler.PushGroup("theWorld.tick");
                 if (!isGamePaused || isMultiplayerWorld())
                 {
-                    theWorld.setAllowedMobSpawns(gameSettings.difficulty > 0, true);
+                    world.setAllowedMobSpawns(gameSettings.difficulty > 0, true);
                     var renderDistance = gameSettings.renderDistance switch
                     {
                         0 => 16,
@@ -1235,20 +1233,20 @@ namespace betareborn
                         3 => 2,
                         _ => 999,
                     };
-                    theWorld.tick(renderDistance);
+                    world.tick(renderDistance);
                 }
 
                 Profiler.PopGroup();
 
-                if (!isGamePaused && theWorld != null)
+                if (!isGamePaused && world != null)
                 {
-                    theWorld.randomDisplayUpdates(MathHelper.floor_double(thePlayer.posX),
-                        MathHelper.floor_double(thePlayer.posY), MathHelper.floor_double(thePlayer.posZ));
+                    world.randomDisplayUpdates(MathHelper.floor_double(player.posX),
+                        MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
                 }
 
                 if (!isGamePaused)
                 {
-                    effectRenderer.updateEffects();
+                    particleManager.updateEffects();
                 }
             }
 
@@ -1266,7 +1264,7 @@ namespace betareborn
                     int var3 = Mouse.getEventDWheel();
                     if (var3 != 0)
                     {
-                        thePlayer.inventory.changeCurrentItem(var3);
+                        player.inventory.changeCurrentItem(var3);
                         if (gameSettings.field_22275_C)
                         {
                             if (var3 > 0)
@@ -1323,7 +1321,7 @@ namespace betareborn
 
             while (Keyboard.next())
             {
-                thePlayer.handleKeyPress(Keyboard.getEventKey(), Keyboard.getEventKeyState());
+                player.handleKeyPress(Keyboard.getEventKey(), Keyboard.getEventKeyState());
 
                 if (Keyboard.getEventKeyState())
                 {
@@ -1371,12 +1369,12 @@ namespace betareborn
 
                             if (Keyboard.getEventKey() == gameSettings.keyBindInventory.keyCode)
                             {
-                                displayGuiScreen(new GuiInventory(thePlayer));
+                                displayGuiScreen(new GuiInventory(player));
                             }
 
                             if (Keyboard.getEventKey() == gameSettings.keyBindDrop.keyCode)
                             {
-                                thePlayer.dropSelectedItem();
+                                player.dropSelectedItem();
                             }
 
                             if (Keyboard.getEventKey() == gameSettings.keyBindChat.keyCode)
@@ -1394,7 +1392,7 @@ namespace betareborn
                         {
                             if (Keyboard.getEventKey() == Keyboard.KEY_1 + var6)
                             {
-                                thePlayer.inventory.currentItem = var6;
+                                player.inventory.currentItem = var6;
                             }
                         }
 
@@ -1437,7 +1435,7 @@ namespace betareborn
 
         public bool isMultiplayerWorld()
         {
-            return theWorld != null && theWorld.isRemote;
+            return world != null && world.isRemote;
         }
 
         public void startWorld(string var1, string var2, long var3)
@@ -1465,59 +1463,59 @@ namespace betareborn
         public void usePortal()
         {
             java.lang.System.@out.println("Toggling dimension!!");
-            if (thePlayer.dimension == -1)
+            if (player.dimension == -1)
             {
-                thePlayer.dimension = 0;
+                player.dimension = 0;
             }
             else
             {
-                thePlayer.dimension = -1;
+                player.dimension = -1;
             }
 
-            theWorld.setEntityDead(thePlayer);
-            thePlayer.isDead = false;
-            double var1 = thePlayer.posX;
-            double var3 = thePlayer.posZ;
+            world.setEntityDead(player);
+            player.isDead = false;
+            double var1 = player.posX;
+            double var3 = player.posZ;
             double var5 = 8.0D;
             World var7;
-            if (thePlayer.dimension == -1)
+            if (player.dimension == -1)
             {
                 var1 /= var5;
                 var3 /= var5;
-                thePlayer.setPositionAndAnglesKeepPrevAngles(var1, thePlayer.posY, var3, thePlayer.rotationYaw,
-                    thePlayer.rotationPitch);
-                if (thePlayer.isEntityAlive())
+                player.setPositionAndAnglesKeepPrevAngles(var1, player.posY, var3, player.rotationYaw,
+                    player.rotationPitch);
+                if (player.isEntityAlive())
                 {
-                    theWorld.updateEntityWithOptionalForce(thePlayer, false);
+                    world.updateEntityWithOptionalForce(player, false);
                 }
 
                 var7 = null;
-                var7 = new World(theWorld, Dimension.fromId(-1));
-                changeWorld(var7, "Entering the Nether", thePlayer);
+                var7 = new World(world, Dimension.fromId(-1));
+                changeWorld(var7, "Entering the Nether", player);
             }
             else
             {
                 var1 *= var5;
                 var3 *= var5;
-                thePlayer.setPositionAndAnglesKeepPrevAngles(var1, thePlayer.posY, var3, thePlayer.rotationYaw,
-                    thePlayer.rotationPitch);
-                if (thePlayer.isEntityAlive())
+                player.setPositionAndAnglesKeepPrevAngles(var1, player.posY, var3, player.rotationYaw,
+                    player.rotationPitch);
+                if (player.isEntityAlive())
                 {
-                    theWorld.updateEntityWithOptionalForce(thePlayer, false);
+                    world.updateEntityWithOptionalForce(player, false);
                 }
 
                 var7 = null;
-                var7 = new World(theWorld, Dimension.fromId(0));
-                changeWorld(var7, "Leaving the Nether", thePlayer);
+                var7 = new World(world, Dimension.fromId(0));
+                changeWorld(var7, "Leaving the Nether", player);
             }
 
-            thePlayer.worldObj = theWorld;
-            if (thePlayer.isEntityAlive())
+            player.worldObj = world;
+            if (player.isEntityAlive())
             {
-                thePlayer.setPositionAndAnglesKeepPrevAngles(var1, thePlayer.posY, var3, thePlayer.rotationYaw,
-                    thePlayer.rotationPitch);
-                theWorld.updateEntityWithOptionalForce(thePlayer, false);
-                (new PortalForcer()).moveToPortal(theWorld, thePlayer);
+                player.setPositionAndAnglesKeepPrevAngles(var1, player.posY, var3, player.rotationYaw,
+                    player.rotationPitch);
+                world.updateEntityWithOptionalForce(player, false);
+                (new PortalForcer()).moveToPortal(world, player);
             }
         }
 
@@ -1564,14 +1562,14 @@ namespace betareborn
         {
             statFileWriter.func_27175_b();
             statFileWriter.syncStats();
-            renderViewEntity = null;
+            camera = null;
             loadingScreen.printText(var2);
             loadingScreen.displayLoadingString("");
             sndManager.playStreaming((string)null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
 
-            if (theWorld != null)
+            if (world != null)
             {
-                theWorld.saveWorldIndirectly(loadingScreen);
+                world.saveWorldIndirectly(loadingScreen);
 
                 while (true)
                 {
@@ -1599,7 +1597,7 @@ namespace betareborn
                 Region.RegionCache.deleteSaveHandler();
             }
 
-            theWorld = var1;
+            world = var1;
             if (var1 != null)
             {
                 playerController.func_717_a(var1);
@@ -1607,15 +1605,15 @@ namespace betareborn
                 {
                     if (var3 == null)
                     {
-                        thePlayer = (EntityPlayerSP)var1.func_4085_a(EntityPlayerSP.Class);
+                        player = (ClientPlayerEntity)var1.func_4085_a(ClientPlayerEntity.Class);
                     }
                 }
-                else if (thePlayer != null)
+                else if (player != null)
                 {
-                    thePlayer.preparePlayerToSpawn();
+                    player.preparePlayerToSpawn();
                     if (var1 != null)
                     {
-                        var1.spawnEntity(thePlayer);
+                        var1.spawnEntity(player);
                     }
                 }
 
@@ -1624,41 +1622,41 @@ namespace betareborn
                     func_6255_d(var2);
                 }
 
-                if (thePlayer == null)
+                if (player == null)
                 {
-                    thePlayer = (EntityPlayerSP)playerController.createPlayer(var1);
-                    thePlayer.preparePlayerToSpawn();
-                    playerController.flipPlayer(thePlayer);
+                    player = (ClientPlayerEntity)playerController.createPlayer(var1);
+                    player.preparePlayerToSpawn();
+                    playerController.flipPlayer(player);
                 }
 
-                thePlayer.movementInput = new MovementInputFromOptions(gameSettings);
+                player.movementInput = new MovementInputFromOptions(gameSettings);
                 if (renderGlobal != null)
                 {
                     renderGlobal.changeWorld(var1);
                 }
 
-                if (effectRenderer != null)
+                if (particleManager != null)
                 {
-                    effectRenderer.clearEffects(var1);
+                    particleManager.clearEffects(var1);
                 }
 
-                playerController.func_6473_b(thePlayer);
+                playerController.func_6473_b(player);
                 if (var3 != null)
                 {
                     var1.emptyMethod1();
                 }
 
-                var1.spawnPlayerWithLoadedChunks(thePlayer);
+                var1.spawnPlayerWithLoadedChunks(player);
                 if (var1.isNewWorld)
                 {
                     var1.saveWorldIndirectly(loadingScreen);
                 }
 
-                renderViewEntity = thePlayer;
+                camera = player;
             }
             else
             {
-                thePlayer = null;
+                player = null;
             }
 
             java.lang.System.gc();
@@ -1675,12 +1673,12 @@ namespace betareborn
             int var3 = 0;
             int var4 = var2 * 2 / 16 + 1;
             var4 *= var4;
-            ChunkSource var5 = theWorld.getChunkSource();
-            Vec3i var6 = theWorld.getSpawnPoint();
-            if (thePlayer != null)
+            ChunkSource var5 = world.getChunkSource();
+            Vec3i var6 = world.getSpawnPoint();
+            if (player != null)
             {
-                var6.x = (int)thePlayer.posX;
-                var6.z = (int)thePlayer.posZ;
+                var6.x = (int)player.posX;
+                var6.z = (int)player.posZ;
             }
 
             for (int var10 = -var2; var10 <= var2; var10 += 16)
@@ -1688,9 +1686,9 @@ namespace betareborn
                 for (int var8 = -var2; var8 <= var2; var8 += 16)
                 {
                     loadingScreen.setLoadingProgress(var3++ * 100 / var4);
-                    theWorld.getBlockId(var6.x + var10, 64, var6.z + var8);
+                    world.getBlockId(var6.x + var10, 64, var6.z + var8);
 
-                    while (theWorld.updatingLighting())
+                    while (world.updatingLighting())
                     {
                     }
                 }
@@ -1698,7 +1696,7 @@ namespace betareborn
 
             loadingScreen.displayLoadingString("Simulating world for a bit");
             bool var9 = true;
-            theWorld.func_656_j();
+            world.func_656_j();
         }
 
         public void installResource(string var1, java.io.File var2)
@@ -1735,17 +1733,17 @@ namespace betareborn
 
         public string func_21002_o()
         {
-            return theWorld.func_21119_g();
+            return world.func_21119_g();
         }
 
         public string func_6245_o()
         {
-            return "P: " + effectRenderer.getStatistics() + ". T: " + theWorld.func_687_d();
+            return "P: " + particleManager.getStatistics() + ". T: " + world.func_687_d();
         }
 
         public void respawn(bool var1, int var2)
         {
-            if (!theWorld.isRemote && !theWorld.dimension.hasWorldSpawn())
+            if (!world.isRemote && !world.dimension.hasWorldSpawn())
             {
                 usePortal();
             }
@@ -1753,52 +1751,52 @@ namespace betareborn
             Vec3i var3 = null;
             Vec3i var4 = null;
             bool var5 = true;
-            if (thePlayer != null && !var1)
+            if (player != null && !var1)
             {
-                var3 = thePlayer.getSpawnPos();
+                var3 = player.getSpawnPos();
                 if (var3 != null)
                 {
-                    var4 = EntityPlayer.findRespawnPosition(theWorld, var3);
+                    var4 = EntityPlayer.findRespawnPosition(world, var3);
                     if (var4 == null)
                     {
-                        thePlayer.sendMessage("tile.bed.notValid");
+                        player.sendMessage("tile.bed.notValid");
                     }
                 }
             }
 
             if (var4 == null)
             {
-                var4 = theWorld.getSpawnPoint();
+                var4 = world.getSpawnPoint();
                 var5 = false;
             }
 
-            theWorld.updateSpawnPosition();
-            theWorld.updateEntityList();
+            world.updateSpawnPosition();
+            world.updateEntityList();
             int var8 = 0;
-            if (thePlayer != null)
+            if (player != null)
             {
-                var8 = thePlayer.entityId;
-                theWorld.setEntityDead(thePlayer);
+                var8 = player.entityId;
+                world.setEntityDead(player);
             }
 
-            renderViewEntity = null;
-            thePlayer = (EntityPlayerSP)playerController.createPlayer(theWorld);
-            thePlayer.dimension = var2;
-            renderViewEntity = thePlayer;
-            thePlayer.preparePlayerToSpawn();
+            camera = null;
+            player = (ClientPlayerEntity)playerController.createPlayer(world);
+            player.dimension = var2;
+            camera = player;
+            player.preparePlayerToSpawn();
             if (var5)
             {
-                thePlayer.setSpawnPos(var3);
-                thePlayer.setPositionAndAnglesKeepPrevAngles((double)((float)var4.x + 0.5F), (double)((float)var4.y + 0.1F),
+                player.setSpawnPos(var3);
+                player.setPositionAndAnglesKeepPrevAngles((double)((float)var4.x + 0.5F), (double)((float)var4.y + 0.1F),
                     (double)((float)var4.z + 0.5F), 0.0F, 0.0F);
             }
 
-            playerController.flipPlayer(thePlayer);
-            theWorld.spawnPlayerWithLoadedChunks(thePlayer);
-            thePlayer.movementInput = new MovementInputFromOptions(gameSettings);
-            thePlayer.entityId = var8;
-            thePlayer.spawn();
-            playerController.func_6473_b(thePlayer);
+            playerController.flipPlayer(player);
+            world.spawnPlayerWithLoadedChunks(player);
+            player.movementInput = new MovementInputFromOptions(gameSettings);
+            player.entityId = var8;
+            player.spawn();
+            playerController.func_6473_b(player);
             func_6255_d("Respawning");
             if (currentScreen is GuiGameOver)
             {
@@ -1848,7 +1846,7 @@ namespace betareborn
 
         public ClientNetworkHandler getSendQueue()
         {
-            return thePlayer is EntityClientPlayerMP ? ((EntityClientPlayerMP)thePlayer).sendQueue : null;
+            return player is EntityClientPlayerMP ? ((EntityClientPlayerMP)player).sendQueue : null;
         }
 
         private static AppBuilder BuildAvaloniaApp()
@@ -1892,22 +1890,22 @@ namespace betareborn
 
         public static bool isGuiEnabled()
         {
-            return theMinecraft == null || !theMinecraft.gameSettings.hideGUI;
+            return INSTANCE == null || !INSTANCE.gameSettings.hideGUI;
         }
 
         public static bool isFancyGraphicsEnabled()
         {
-            return theMinecraft != null;
+            return INSTANCE != null;
         }
 
         public static bool isAmbientOcclusionEnabled()
         {
-            return theMinecraft != null;
+            return INSTANCE != null;
         }
 
         public static bool isDebugInfoEnabled()
         {
-            return theMinecraft != null && theMinecraft.gameSettings.showDebugInfo;
+            return INSTANCE != null && INSTANCE.gameSettings.showDebugInfo;
         }
 
         public bool lineIsCommand(string var1) => (var1.StartsWith("/"));

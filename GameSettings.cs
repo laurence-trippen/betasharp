@@ -147,18 +147,18 @@ namespace betareborn
                     anisotropicLevel = 0;
                 }
 
-                if (Minecraft.theMinecraft?.renderEngine != null)
+                if (Minecraft.INSTANCE?.textureManager != null)
                 {
-                    Minecraft.theMinecraft.renderEngine.refreshTextures();
+                    Minecraft.INSTANCE.textureManager.refreshTextures();
                 }
             }
 
             if (var1 == EnumOptions.MIPMAPS)
             {
                 useMipmaps = !useMipmaps;
-                if (Minecraft.theMinecraft?.renderEngine != null)
+                if (Minecraft.INSTANCE?.textureManager != null)
                 {
-                    Minecraft.theMinecraft.renderEngine.refreshTextures();
+                    Minecraft.INSTANCE.textureManager.refreshTextures();
                 }
             }
 

@@ -138,7 +138,7 @@ namespace betareborn.Client.Guis
             short var5 = 274;
             int var6 = width / 2 - var5 / 2;
             byte var7 = 30;
-            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture("/title/mclogo.png"));
+            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture("/title/mclogo.png"));
             GLManager.GL.Color4(1.0F, 1.0F, 1.0F, 1.0F);
             drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 155, 44);
             drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);

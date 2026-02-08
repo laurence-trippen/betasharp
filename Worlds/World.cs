@@ -1287,7 +1287,7 @@ namespace betareborn.Worlds
             }
 
             var3 = 1.0F - var3;
-            var3 = (float)((double)var3 * (1.0D - (double)(func_27162_g(var1) * 5.0F) / 16.0D));
+            var3 = (float)((double)var3 * (1.0D - (double)(getRainGradient(var1) * 5.0F) / 16.0D));
             var3 = (float)((double)var3 * (1.0D - (double)(func_27166_f(var1) * 5.0F) / 16.0D));
             var3 = 1.0F - var3;
             return (int)(var3 * 11.0F);
@@ -1317,7 +1317,7 @@ namespace betareborn.Worlds
             var9 *= var4;
             var10 *= var4;
             var11 *= var4;
-            float var12 = func_27162_g(var2);
+            float var12 = getRainGradient(var2);
             float var13;
             float var14;
             if (var12 > 0.0F)
@@ -1378,7 +1378,7 @@ namespace betareborn.Worlds
             float var4 = (float)(field_1019_F >> 16 & 255L) / 255.0F;
             float var5 = (float)(field_1019_F >> 8 & 255L) / 255.0F;
             float var6 = (float)(field_1019_F & 255L) / 255.0F;
-            float var7 = func_27162_g(var1);
+            float var7 = getRainGradient(var1);
             float var8;
             float var9;
             if (var7 > 0.0F)
@@ -3043,10 +3043,10 @@ namespace betareborn.Worlds
 
         public float func_27166_f(float var1)
         {
-            return (prevThunderingStrength + (thunderingStrength - prevThunderingStrength) * var1) * func_27162_g(var1);
+            return (prevThunderingStrength + (thunderingStrength - prevThunderingStrength) * var1) * getRainGradient(var1);
         }
 
-        public float func_27162_g(float var1)
+        public float getRainGradient(float var1)
         {
             return prevRainingStrength + (rainingStrength - prevRainingStrength) * var1;
         }
@@ -3064,7 +3064,7 @@ namespace betareborn.Worlds
 
         public bool isRaining()
         {
-            return (double)func_27162_g(1.0F) > 0.2D;
+            return (double)getRainGradient(1.0F) > 0.2D;
         }
 
         public bool isRaining(int var1, int var2, int var3)

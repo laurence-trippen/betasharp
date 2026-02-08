@@ -97,7 +97,7 @@ namespace betareborn
                     GLManager.GL.Translate(0.0F, 0.0F, -200.0F);
                     GLManager.GL.Clear(ClearBufferMask.DepthBufferBit | ClearBufferMask.ColorBufferBit);
                     Tessellator var7 = Tessellator.instance;
-                    int var8 = mc.renderEngine.getTexture("/gui/background.png");
+                    int var8 = mc.textureManager.getTexture("/gui/background.png");
                     GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)var8);
                     float var9 = 32.0F;
                     var7.startDrawingQuads();

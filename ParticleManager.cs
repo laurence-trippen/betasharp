@@ -8,14 +8,14 @@ using Silk.NET.OpenGL.Legacy;
 
 namespace betareborn
 {
-    public class EffectRenderer
+    public class ParticleManager
     {
         protected World worldObj;
         private List[] fxLayers = new List[4];
         private TextureManager renderer;
         private java.util.Random rand = new();
 
-        public EffectRenderer(World var1, TextureManager var2)
+        public ParticleManager(World var1, TextureManager var2)
         {
             if (var1 != null)
             {

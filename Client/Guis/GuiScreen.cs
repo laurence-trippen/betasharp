@@ -165,7 +165,7 @@ namespace betareborn.Client.Guis
 
         public void drawWorldBackground(int var1)
         {
-            if (mc.theWorld != null)
+            if (mc.world != null)
             {
                 drawGradientRect(0, 0, width, height, -1072689136, -804253680);
             }
@@ -181,7 +181,7 @@ namespace betareborn.Client.Guis
             GLManager.GL.Disable(EnableCap.Lighting);
             GLManager.GL.Disable(EnableCap.Fog);
             Tessellator var2 = Tessellator.instance;
-            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture("/gui/background.png"));
+            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture("/gui/background.png"));
             GLManager.GL.Color4(1.0F, 1.0F, 1.0F, 1.0F);
             float var3 = 32.0F;
             var2.startDrawingQuads();

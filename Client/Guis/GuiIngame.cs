@@ -37,51 +37,51 @@ namespace betareborn.Client.Guis
             int var6 = var5.getScaledWidth();
             int var7 = var5.getScaledHeight();
             FontRenderer var8 = mc.fontRenderer;
-            mc.entityRenderer.func_905_b();
+            mc.gameRenderer.setupHudRender();
             GLManager.GL.Enable(GLEnum.Blend);
             if (Minecraft.isFancyGraphicsEnabled())
             {
-                renderVignette(mc.thePlayer.getEntityBrightness(var1), var6, var7);
+                renderVignette(mc.player.getEntityBrightness(var1), var6, var7);
             }
 
-            ItemStack var9 = mc.thePlayer.inventory.armorItemInSlot(3);
+            ItemStack var9 = mc.player.inventory.armorItemInSlot(3);
             if (!mc.gameSettings.thirdPersonView && var9 != null && var9.itemID == Block.PUMPKIN.id)
             {
                 renderPumpkinBlur(var6, var7);
             }
 
-            float var10 = mc.thePlayer.prevTimeInPortal + (mc.thePlayer.timeInPortal - mc.thePlayer.prevTimeInPortal) * var1;
+            float var10 = mc.player.prevTimeInPortal + (mc.player.timeInPortal - mc.player.prevTimeInPortal) * var1;
             if (var10 > 0.0F)
             {
                 renderPortalOverlay(var10, var6, var7);
             }
 
             GLManager.GL.Color4(1.0F, 1.0F, 1.0F, 1.0F);
-            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture("/gui/gui.png"));
-            InventoryPlayer var11 = mc.thePlayer.inventory;
+            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture("/gui/gui.png"));
+            InventoryPlayer var11 = mc.player.inventory;
             zLevel = -90.0F;
             drawTexturedModalRect(var6 / 2 - 91, var7 - 22, 0, 0, 182, 22);
             drawTexturedModalRect(var6 / 2 - 91 - 1 + var11.currentItem * 20, var7 - 22 - 1, 0, 22, 24, 22);
-            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture("/gui/icons.png"));
+            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture("/gui/icons.png"));
             GLManager.GL.Enable(GLEnum.Blend);
             GLManager.GL.BlendFunc(GLEnum.OneMinusDstColor, GLEnum.OneMinusSrcColor);
             drawTexturedModalRect(var6 / 2 - 7, var7 / 2 - 7, 0, 0, 16, 16);
             GLManager.GL.Disable(GLEnum.Blend);
-            bool var12 = mc.thePlayer.heartsLife / 3 % 2 == 1;
-            if (mc.thePlayer.heartsLife < 10)
+            bool var12 = mc.player.heartsLife / 3 % 2 == 1;
+            if (mc.player.heartsLife < 10)
             {
                 var12 = false;
             }
 
-            int var13 = mc.thePlayer.health;
-            int var14 = mc.thePlayer.prevHealth;
+            int var13 = mc.player.health;
+            int var14 = mc.player.prevHealth;
             rand.setSeed(updateCounter * 312871);
             int var15;
             int var16;
             int var17;
             if (mc.playerController.shouldDrawHUD())
             {
-                var15 = mc.thePlayer.getPlayerArmorValue();
+                var15 = mc.player.getPlayerArmorValue();
 
                 int var18;
                 for (var16 = 0; var16 < 10; ++var16)
@@ -143,10 +143,10 @@ namespace betareborn.Client.Guis
                     }
                 }
 
-                if (mc.thePlayer.isInsideOfMaterial(Material.WATER))
+                if (mc.player.isInsideOfMaterial(Material.WATER))
                 {
-                    var16 = (int)java.lang.Math.ceil((mc.thePlayer.air - 2) * 10.0D / 300.0D);
-                    var17 = (int)java.lang.Math.ceil(mc.thePlayer.air * 10.0D / 300.0D) - var16;
+                    var16 = (int)java.lang.Math.ceil((mc.player.air - 2) * 10.0D / 300.0D);
+                    var17 = (int)java.lang.Math.ceil(mc.player.air * 10.0D / 300.0D) - var16;
 
                     for (var18 = 0; var18 < var16 + var17; ++var18)
                     {
@@ -178,11 +178,11 @@ namespace betareborn.Client.Guis
 
             RenderHelper.disableStandardItemLighting();
             GLManager.GL.Disable(GLEnum.RescaleNormal);
-            if (mc.thePlayer.getSleepTimer() > 0)
+            if (mc.player.getSleepTimer() > 0)
             {
                 GLManager.GL.Disable(GLEnum.DepthTest);
                 GLManager.GL.Disable(GLEnum.AlphaTest);
-                var15 = mc.thePlayer.getSleepTimer();
+                var15 = mc.player.getSleepTimer();
                 float var27 = var15 / 100.0F;
                 if (var27 > 1.0F)
                 {
@@ -216,10 +216,10 @@ namespace betareborn.Client.Guis
                 drawString(var8, var23, var6 - var8.getStringWidth(var23) - 2, 2, 14737632);
                 var23 = "Allocated memory: " + var29 * 100L / var24 + "% (" + var29 / 1024L / 1024L + "MB)";
                 drawString(var8, var23, var6 - var8.getStringWidth(var23) - 2, 12, 14737632);
-                drawString(var8, "x: " + mc.thePlayer.posX, 2, 64, 14737632);
-                drawString(var8, "y: " + mc.thePlayer.posY, 2, 72, 14737632);
-                drawString(var8, "z: " + mc.thePlayer.posZ, 2, 80, 14737632);
-                drawString(var8, "f: " + (MathHelper.floor_double((double)(mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
+                drawString(var8, "x: " + mc.player.posX, 2, 64, 14737632);
+                drawString(var8, "y: " + mc.player.posY, 2, 72, 14737632);
+                drawString(var8, "z: " + mc.player.posZ, 2, 80, 14737632);
+                drawString(var8, "f: " + (MathHelper.floor_double((double)(mc.player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
                 GLManager.GL.PopMatrix();
             }
 
@@ -312,7 +312,7 @@ namespace betareborn.Client.Guis
             GLManager.GL.BlendFunc(GLEnum.SrcAlpha, GLEnum.OneMinusSrcAlpha);
             GLManager.GL.Color4(1.0F, 1.0F, 1.0F, 1.0F);
             GLManager.GL.Disable(GLEnum.AlphaTest);
-            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture("%blur%/misc/pumpkinblur.png"));
+            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture("%blur%/misc/pumpkinblur.png"));
             Tessellator var3 = Tessellator.instance;
             var3.startDrawingQuads();
             var3.addVertexWithUV(0.0D, var2, -90.0D, 0.0D, 1.0D);
@@ -344,7 +344,7 @@ namespace betareborn.Client.Guis
             GLManager.GL.DepthMask(false);
             GLManager.GL.BlendFunc(GLEnum.Zero, GLEnum.OneMinusSrcColor);
             GLManager.GL.Color4(prevVignetteBrightness, prevVignetteBrightness, prevVignetteBrightness, 1.0F);
-            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture("%blur%/misc/vignette.png"));
+            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture("%blur%/misc/vignette.png"));
             Tessellator var4 = Tessellator.instance;
             var4.startDrawingQuads();
             var4.addVertexWithUV(0.0D, var3, -90.0D, 0.0D, 1.0D);
@@ -372,7 +372,7 @@ namespace betareborn.Client.Guis
             GLManager.GL.DepthMask(false);
             GLManager.GL.BlendFunc(GLEnum.SrcAlpha, GLEnum.OneMinusSrcAlpha);
             GLManager.GL.Color4(1.0F, 1.0F, 1.0F, var1);
-            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.renderEngine.getTexture("/terrain.png"));
+            GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)mc.textureManager.getTexture("/terrain.png"));
             float var4 = Block.NETHER_PORTAL.textureId % 16 / 16.0F;
             float var5 = Block.NETHER_PORTAL.textureId / 16 / 16.0F;
             float var6 = (Block.NETHER_PORTAL.textureId % 16 + 1) / 16.0F;
@@ -392,7 +392,7 @@ namespace betareborn.Client.Guis
 
         private void renderInventorySlot(int var1, int var2, int var3, float var4)
         {
-            ItemStack var5 = mc.thePlayer.inventory.mainInventory[var1];
+            ItemStack var5 = mc.player.inventory.mainInventory[var1];
             if (var5 != null)
             {
                 float var6 = var5.animationsToGo - var4;
@@ -405,13 +405,13 @@ namespace betareborn.Client.Guis
                     GLManager.GL.Translate(-(var2 + 8), -(var3 + 12), 0.0F);
                 }
 
-                itemRenderer.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, var5, var2, var3);
+                itemRenderer.renderItemIntoGUI(mc.fontRenderer, mc.textureManager, var5, var2, var3);
                 if (var6 > 0.0F)
                 {
                     GLManager.GL.PopMatrix();
                 }
 
-                itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, var5, var2, var3);
+                itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.textureManager, var5, var2, var3);
             }
         }
 

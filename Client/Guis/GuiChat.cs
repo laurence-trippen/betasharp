@@ -50,7 +50,7 @@ namespace betareborn.Client.Guis
 
                             if (isCommand)
                             {
-                                if (mc.theWorld.isRemote)
+                                if (mc.world.isRemote)
                                 {
                                     mc.ingameGUI.addChatMessage("Cannot execute commands in multiplayer!");
                                     mc.displayGuiScreen(null);
@@ -63,7 +63,7 @@ namespace betareborn.Client.Guis
                             }
                             else
                             {
-                                mc.thePlayer.sendChatMessage(msg);
+                                mc.player.sendChatMessage(msg);
                             }
                         }
 

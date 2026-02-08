@@ -49,7 +49,7 @@ namespace betareborn.Client.Guis
                 }
                 else if (var1.id == 6)
                 {
-                    mc.renderEngine.refreshTextures();
+                    mc.textureManager.refreshTextures();
                     mc.displayGuiScreen(guiScreen);
                 }
                 else

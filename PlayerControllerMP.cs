@@ -33,16 +33,16 @@ namespace betareborn
 
         public override bool sendBlockRemoved(int var1, int var2, int var3, int var4)
         {
-            int var5 = mc.theWorld.getBlockId(var1, var2, var3);
+            int var5 = mc.world.getBlockId(var1, var2, var3);
             bool var6 = base.sendBlockRemoved(var1, var2, var3, var4);
-            ItemStack var7 = mc.thePlayer.getHand();
+            ItemStack var7 = mc.player.getHand();
             if (var7 != null)
             {
-                var7.onDestroyBlock(var5, var1, var2, var3, mc.thePlayer);
+                var7.onDestroyBlock(var5, var1, var2, var3, mc.player);
                 if (var7.count == 0)
                 {
-                    var7.onRemoved(mc.thePlayer);
-                    mc.thePlayer.clearStackInHand();
+                    var7.onRemoved(mc.player);
+                    mc.player.clearStackInHand();
                 }
             }
 
@@ -54,13 +54,13 @@ namespace betareborn
             if (!isHittingBlock || var1 != currentBlockX || var2 != currentBlockY || var3 != currentblockZ)
             {
                 netClientHandler.addToSendQueue(new Packet14BlockDig(0, var1, var2, var3, var4));
-                int var5 = mc.theWorld.getBlockId(var1, var2, var3);
+                int var5 = mc.world.getBlockId(var1, var2, var3);
                 if (var5 > 0 && curBlockDamageMP == 0.0F)
                 {
-                    Block.BLOCKS[var5].onBlockBreakStart(mc.theWorld, var1, var2, var3, mc.thePlayer);
+                    Block.BLOCKS[var5].onBlockBreakStart(mc.world, var1, var2, var3, mc.player);
                 }
 
-                if (var5 > 0 && Block.BLOCKS[var5].getHardness(mc.thePlayer) >= 1.0F)
+                if (var5 > 0 && Block.BLOCKS[var5].getHardness(mc.player) >= 1.0F)
                 {
                     sendBlockRemoved(var1, var2, var3, var4);
                 }
@@ -97,7 +97,7 @@ namespace betareborn
                 {
                     if (var1 == currentBlockX && var2 == currentBlockY && var3 == currentblockZ)
                     {
-                        int var5 = mc.theWorld.getBlockId(var1, var2, var3);
+                        int var5 = mc.world.getBlockId(var1, var2, var3);
                         if (var5 == 0)
                         {
                             isHittingBlock = false;
@@ -105,7 +105,7 @@ namespace betareborn
                         }
 
                         Block var6 = Block.BLOCKS[var5];
-                        curBlockDamageMP += var6.getHardness(mc.thePlayer);
+                        curBlockDamageMP += var6.getHardness(mc.player);
                         if (field_9441_h % 4.0F == 0.0F && var6 != null)
                         {
                             mc.sndManager.playSound(var6.soundGroup.func_1145_d(), (float)var1 + 0.5F, (float)var2 + 0.5F, (float)var3 + 0.5F, (var6.soundGroup.getVolume() + 1.0F) / 8.0F, var6.soundGroup.getPitch() * 0.5F);
@@ -167,7 +167,7 @@ namespace betareborn
 
         private void syncCurrentPlayItem()
         {
-            int var1 = mc.thePlayer.inventory.currentItem;
+            int var1 = mc.player.inventory.currentItem;
             if (var1 != currentPlayerItem)
             {
                 currentPlayerItem = var1;

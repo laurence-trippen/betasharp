@@ -59,13 +59,13 @@ namespace betareborn.Client.Textures
             }
 
             double var20 = 0.0D;
-            if (mc.theWorld != null && mc.thePlayer != null)
+            if (mc.world != null && mc.player != null)
             {
-                Vec3i var21 = mc.theWorld.getSpawnPoint();
-                double var23 = var21.x - mc.thePlayer.posX;
-                double var25 = var21.z - mc.thePlayer.posZ;
-                var20 = (double)(mc.thePlayer.rotationYaw - 90.0F) * Math.PI / 180.0D - java.lang.Math.atan2(var25, var23);
-                if (mc.theWorld.dimension.isNether)
+                Vec3i var21 = mc.world.getSpawnPoint();
+                double var23 = var21.x - mc.player.posX;
+                double var25 = var21.z - mc.player.posZ;
+                var20 = (double)(mc.player.rotationYaw - 90.0F) * Math.PI / 180.0D - java.lang.Math.atan2(var25, var23);
+                if (mc.world.dimension.isNether)
                 {
                     var20 = java.lang.Math.random() * (double)(float)Math.PI * 2.0D;
                 }

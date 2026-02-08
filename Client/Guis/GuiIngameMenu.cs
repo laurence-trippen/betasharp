@@ -40,7 +40,7 @@ namespace betareborn.Client.Guis
                 mc.statFileWriter.readStat(Stats.Stats.leaveGameStat, 1);
                 if (mc.isMultiplayerWorld())
                 {
-                    mc.theWorld.sendQuittingDisconnectingPacket();
+                    mc.world.sendQuittingDisconnectingPacket();
                 }
 
                 mc.changeWorld1(null);
@@ -73,7 +73,7 @@ namespace betareborn.Client.Guis
         public override void drawScreen(int var1, int var2, float var3)
         {
             drawDefaultBackground();
-            bool var4 = !mc.theWorld.func_650_a(updateCounter2++);
+            bool var4 = !mc.world.func_650_a(updateCounter2++);
             if (var4 || updateCounter < 20)
             {
                 float var5 = (updateCounter % 10 + var3) / 10.0F;

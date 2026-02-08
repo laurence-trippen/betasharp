@@ -19,11 +19,11 @@ namespace betareborn
             {
                 if (var1.inventory.mainInventory[var2] == null)
                 {
-                    mc.thePlayer.inventory.mainInventory[var2] = new ItemStack((Block)Session.registeredBlocksList.get(var2));
+                    mc.player.inventory.mainInventory[var2] = new ItemStack((Block)Session.registeredBlocksList.get(var2));
                 }
                 else
                 {
-                    mc.thePlayer.inventory.mainInventory[var2].count = 1;
+                    mc.player.inventory.mainInventory[var2].count = 1;
                 }
             }
 

@@ -6,7 +6,7 @@ using betareborn.Worlds;
 
 namespace betareborn.Client.Network
 {
-    public class EntityClientPlayerMP : EntityPlayerSP
+    public class EntityClientPlayerMP : ClientPlayerEntity
     {
         public static readonly new java.lang.Class Class = ikvm.runtime.Util.getClassFromTypeHandle(typeof(EntityClientPlayerMP).TypeHandle);
 

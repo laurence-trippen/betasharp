@@ -29,7 +29,7 @@ namespace betareborn.Client.Guis
 
             if (var1.id == 1)
             {
-                mc.thePlayer.respawn();
+                mc.player.respawn();
                 mc.displayGuiScreen(null);
             }
 
@@ -48,7 +48,7 @@ namespace betareborn.Client.Guis
             GLManager.GL.Scale(2.0F, 2.0F, 2.0F);
             drawCenteredString(fontRenderer, "Game over!", width / 2 / 2, 30, 16777215);
             GLManager.GL.PopMatrix();
-            drawCenteredString(fontRenderer, "Score: &e" + mc.thePlayer.getScore(), width / 2, 100, 16777215);
+            drawCenteredString(fontRenderer, "Score: &e" + mc.player.getScore(), width / 2, 100, 16777215);
             base.drawScreen(var1, var2, var3);
         }
 

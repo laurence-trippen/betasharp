@@ -208,7 +208,7 @@ namespace betareborn.Entities
         //TODO: will this still work properly when we implement the server?
         public override void moveEntity(double var1, double var3, double var5)
         {
-            if (!isMultiplayerEntity || this is EntityPlayerSP) base.moveEntity(var1, var3, var5);
+            if (!isMultiplayerEntity || this is ClientPlayerEntity) base.moveEntity(var1, var3, var5);
         }
 
         public void animateSpawn()

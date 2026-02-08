@@ -52,7 +52,7 @@ namespace betareborn.Client.Rendering
             modelArmorChestplate.field_1278_i = modelArmor.field_1278_i = modelBipedMain.field_1278_i = var10 != null;
             modelArmorChestplate.isSneak = modelArmor.isSneak = modelBipedMain.isSneak = var1.isSneaking();
             double var11 = var4 - var1.yOffset;
-            if (var1.isSneaking() && !(var1 is EntityPlayerSP))
+            if (var1.isSneaking() && !(var1 is ClientPlayerEntity))
             {
                 var11 -= 0.125D;
             }

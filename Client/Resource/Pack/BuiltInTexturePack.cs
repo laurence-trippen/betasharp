@@ -30,7 +30,7 @@ namespace betareborn.Client.Resource.Pack
         {
             if (texturePackThumbnail != null)
             {
-                var1.renderEngine.deleteTexture(texturePackName);
+                var1.textureManager.deleteTexture(texturePackName);
             }
 
         }
@@ -39,16 +39,16 @@ namespace betareborn.Client.Resource.Pack
         {
             if (texturePackThumbnail != null && texturePackName < 0)
             {
-                texturePackName = var1.renderEngine.allocateAndSetupTexture(texturePackThumbnail);
+                texturePackName = var1.textureManager.allocateAndSetupTexture(texturePackThumbnail);
             }
 
             if (texturePackThumbnail != null)
             {
-                var1.renderEngine.bindTexture(texturePackName);
+                var1.textureManager.bindTexture(texturePackName);
             }
             else
             {
-                GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)var1.renderEngine.getTexture("/gui/unknown_pack.png"));
+                GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)var1.textureManager.getTexture("/gui/unknown_pack.png"));
             }
 
         }

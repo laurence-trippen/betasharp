@@ -48,7 +48,7 @@ namespace betareborn.Client.Rendering
             int var7 = 256 / var6 + 2;
             float var5 = 16.0F;
 
-            worldRenderer = new(var1.theWorld, 2);
+            worldRenderer = new(var1.world, 2);
 
             int var8;
             int var9;
@@ -197,12 +197,12 @@ namespace betareborn.Client.Rendering
             }
             else
             {
-                BlockEntityRenderer.instance.cacheActiveRenderInfo(worldObj, renderEngine, mc.fontRenderer, mc.renderViewEntity, var3);
-                RenderManager.instance.cacheActiveRenderInfo(worldObj, renderEngine, mc.fontRenderer, mc.renderViewEntity, mc.gameSettings, var3);
+                BlockEntityRenderer.instance.cacheActiveRenderInfo(worldObj, renderEngine, mc.fontRenderer, mc.camera, var3);
+                RenderManager.instance.cacheActiveRenderInfo(worldObj, renderEngine, mc.fontRenderer, mc.camera, mc.gameSettings, var3);
                 countEntitiesTotal = 0;
                 countEntitiesRendered = 0;
                 countEntitiesHidden = 0;
-                EntityLiving var4 = mc.renderViewEntity;
+                EntityLiving var4 = mc.camera;
                 RenderManager.renderPosX = var4.lastTickPosX + (var4.posX - var4.lastTickPosX) * (double)var3;
                 RenderManager.renderPosY = var4.lastTickPosY + (var4.posY - var4.lastTickPosY) * (double)var3;
                 RenderManager.renderPosZ = var4.lastTickPosZ + (var4.posZ - var4.lastTickPosZ) * (double)var3;
@@ -227,7 +227,7 @@ namespace betareborn.Client.Rendering
                 for (var6 = 0; var6 < var5.Count; ++var6)
                 {
                     var7 = var5[var6];
-                    if (var7.isInRangeToRenderVec3D(var1) && (var7.ignoreFrustumCheck || var2.isBoundingBoxInFrustum(var7.boundingBox)) && (var7 != mc.renderViewEntity || mc.gameSettings.thirdPersonView || mc.renderViewEntity.isSleeping()))
+                    if (var7.isInRangeToRenderVec3D(var1) && (var7.ignoreFrustumCheck || var2.isBoundingBoxInFrustum(var7.boundingBox)) && (var7 != mc.camera || mc.gameSettings.thirdPersonView || mc.camera.isSleeping()))
                     {
                         int var8 = MathHelper.floor_double(var7.posY);
                         if (var8 < 0)
@@ -293,10 +293,10 @@ namespace betareborn.Client.Rendering
 
         public void renderSky(float var1)
         {
-            if (!mc.theWorld.dimension.isNether)
+            if (!mc.world.dimension.isNether)
             {
                 GLManager.GL.Disable(GLEnum.Texture2D);
-                Vector3D<double> var2 = worldObj.func_4079_a(mc.renderViewEntity, var1);
+                Vector3D<double> var2 = worldObj.func_4079_a(mc.camera, var1);
                 float var3 = (float)var2.X;
                 float var4 = (float)var2.Y;
                 float var5 = (float)var2.Z;
@@ -354,7 +354,7 @@ namespace betareborn.Client.Rendering
                 GLManager.GL.Enable(GLEnum.Texture2D);
                 GLManager.GL.BlendFunc(GLEnum.SrcAlpha, GLEnum.One);
                 GLManager.GL.PushMatrix();
-                var7 = 1.0F - worldObj.func_27162_g(var1);
+                var7 = 1.0F - worldObj.getRainGradient(var1);
                 var8 = 0.0F;
                 var9 = 0.0F;
                 var10 = 0.0F;
@@ -409,7 +409,7 @@ namespace betareborn.Client.Rendering
 
         public void renderClouds(float var1)
         {
-            if (!mc.theWorld.dimension.isNether)
+            if (!mc.world.dimension.isNether)
             {
                 renderCloudsFancy(var1);
             }
@@ -418,12 +418,12 @@ namespace betareborn.Client.Rendering
         private void renderCloudsFancy(float var1)
         {
             GLManager.GL.Disable(GLEnum.CullFace);
-            float var2 = (float)(mc.renderViewEntity.lastTickPosY + (mc.renderViewEntity.posY - mc.renderViewEntity.lastTickPosY) * (double)var1);
+            float var2 = (float)(mc.camera.lastTickPosY + (mc.camera.posY - mc.camera.lastTickPosY) * (double)var1);
             Tessellator var3 = Tessellator.instance;
             float var4 = 12.0F;
             float var5 = 4.0F;
-            double var6 = (mc.renderViewEntity.prevPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.prevPosX) * (double)var1 + (double)((cloudOffsetX + var1) * 0.03F)) / (double)var4;
-            double var8 = (mc.renderViewEntity.prevPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.prevPosZ) * (double)var1) / (double)var4 + (double)0.33F;
+            double var6 = (mc.camera.prevPosX + (mc.camera.posX - mc.camera.prevPosX) * (double)var1 + (double)((cloudOffsetX + var1) * 0.03F)) / (double)var4;
+            double var8 = (mc.camera.prevPosZ + (mc.camera.posZ - mc.camera.prevPosZ) * (double)var1) / (double)var4 + (double)0.33F;
             float var10 = worldObj.dimension.getCloudHeight() - var2 + 0.33F;
             int var11 = MathHelper.floor_double(var6 / 2048.0D);
             int var12 = MathHelper.floor_double(var8 / 2048.0D);
@@ -753,7 +753,7 @@ namespace betareborn.Client.Rendering
                 var10 *= var8;
             }
 
-            if (mc.renderViewEntity.getSquaredDistance(var2, var4, var6) < (double)(var10 * var10))
+            if (mc.camera.getSquaredDistance(var2, var4, var6) < (double)(var10 * var10))
             {
                 mc.sndManager.playSound(var1, (float)var2, (float)var4, (float)var6, var8, var9);
             }
@@ -762,73 +762,73 @@ namespace betareborn.Client.Rendering
 
         public void spawnParticle(string var1, double var2, double var4, double var6, double var8, double var10, double var12)
         {
-            if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null)
+            if (mc != null && mc.camera != null && mc.particleManager != null)
             {
-                double var14 = mc.renderViewEntity.posX - var2;
-                double var16 = mc.renderViewEntity.posY - var4;
-                double var18 = mc.renderViewEntity.posZ - var6;
+                double var14 = mc.camera.posX - var2;
+                double var16 = mc.camera.posY - var4;
+                double var18 = mc.camera.posZ - var6;
                 double var20 = 16.0D;
                 if (var14 * var14 + var16 * var16 + var18 * var18 <= var20 * var20)
                 {
                     if (var1.Equals("bubble"))
                     {
-                        mc.effectRenderer.addEffect(new EntityBubbleFX(worldObj, var2, var4, var6, var8, var10, var12));
+                        mc.particleManager.addEffect(new EntityBubbleFX(worldObj, var2, var4, var6, var8, var10, var12));
                     }
                     else if (var1.Equals("smoke"))
                     {
-                        mc.effectRenderer.addEffect(new EntitySmokeFX(worldObj, var2, var4, var6, var8, var10, var12));
+                        mc.particleManager.addEffect(new EntitySmokeFX(worldObj, var2, var4, var6, var8, var10, var12));
                     }
                     else if (var1.Equals("note"))
                     {
-                        mc.effectRenderer.addEffect(new EntityNoteFX(worldObj, var2, var4, var6, var8, var10, var12));
+                        mc.particleManager.addEffect(new EntityNoteFX(worldObj, var2, var4, var6, var8, var10, var12));
                     }
                     else if (var1.Equals("portal"))
                     {
-                        mc.effectRenderer.addEffect(new EntityPortalFX(worldObj, var2, var4, var6, var8, var10, var12));
+                        mc.particleManager.addEffect(new EntityPortalFX(worldObj, var2, var4, var6, var8, var10, var12));
                     }
                     else if (var1.Equals("explode"))
                     {
-                        mc.effectRenderer.addEffect(new EntityExplodeFX(worldObj, var2, var4, var6, var8, var10, var12));
+                        mc.particleManager.addEffect(new EntityExplodeFX(worldObj, var2, var4, var6, var8, var10, var12));
                     }
                     else if (var1.Equals("flame"))
                     {
-                        mc.effectRenderer.addEffect(new EntityFlameFX(worldObj, var2, var4, var6, var8, var10, var12));
+                        mc.particleManager.addEffect(new EntityFlameFX(worldObj, var2, var4, var6, var8, var10, var12));
                     }
                     else if (var1.Equals("lava"))
                     {
-                        mc.effectRenderer.addEffect(new EntityLavaFX(worldObj, var2, var4, var6));
+                        mc.particleManager.addEffect(new EntityLavaFX(worldObj, var2, var4, var6));
                     }
                     else if (var1.Equals("footstep"))
                     {
-                        mc.effectRenderer.addEffect(new EntityFootStepFX(renderEngine, worldObj, var2, var4, var6));
+                        mc.particleManager.addEffect(new EntityFootStepFX(renderEngine, worldObj, var2, var4, var6));
                     }
                     else if (var1.Equals("splash"))
                     {
-                        mc.effectRenderer.addEffect(new EntitySplashFX(worldObj, var2, var4, var6, var8, var10, var12));
+                        mc.particleManager.addEffect(new EntitySplashFX(worldObj, var2, var4, var6, var8, var10, var12));
                     }
                     else if (var1.Equals("largesmoke"))
                     {
-                        mc.effectRenderer.addEffect(new EntitySmokeFX(worldObj, var2, var4, var6, var8, var10, var12, 2.5F));
+                        mc.particleManager.addEffect(new EntitySmokeFX(worldObj, var2, var4, var6, var8, var10, var12, 2.5F));
                     }
                     else if (var1.Equals("reddust"))
                     {
-                        mc.effectRenderer.addEffect(new EntityReddustFX(worldObj, var2, var4, var6, (float)var8, (float)var10, (float)var12));
+                        mc.particleManager.addEffect(new EntityReddustFX(worldObj, var2, var4, var6, (float)var8, (float)var10, (float)var12));
                     }
                     else if (var1.Equals("snowballpoof"))
                     {
-                        mc.effectRenderer.addEffect(new EntitySlimeFX(worldObj, var2, var4, var6, Item.snowball));
+                        mc.particleManager.addEffect(new EntitySlimeFX(worldObj, var2, var4, var6, Item.snowball));
                     }
                     else if (var1.Equals("snowshovel"))
                     {
-                        mc.effectRenderer.addEffect(new EntitySnowShovelFX(worldObj, var2, var4, var6, var8, var10, var12));
+                        mc.particleManager.addEffect(new EntitySnowShovelFX(worldObj, var2, var4, var6, var8, var10, var12));
                     }
                     else if (var1.Equals("slime"))
                     {
-                        mc.effectRenderer.addEffect(new EntitySlimeFX(worldObj, var2, var4, var6, Item.slimeBall));
+                        mc.particleManager.addEffect(new EntitySlimeFX(worldObj, var2, var4, var6, Item.slimeBall));
                     }
                     else if (var1.Equals("heart"))
                     {
-                        mc.effectRenderer.addEffect(new EntityHeartFX(worldObj, var2, var4, var6, var8, var10, var12));
+                        mc.particleManager.addEffect(new EntityHeartFX(worldObj, var2, var4, var6, var8, var10, var12));
                     }
 
                 }
@@ -941,7 +941,7 @@ namespace betareborn.Client.Rendering
                         mc.sndManager.playSound(var17.soundGroup.stepSoundDir(), var3 + 0.5F, var4 + 0.5F, var5 + 0.5F, (var17.soundGroup.getVolume() + 1.0F) / 2.0F, var17.soundGroup.getPitch() * 0.8F);
                     }
 
-                    mc.effectRenderer.addBlockDestroyEffects(var3, var4, var5, var6 & 255, var6 >> 8 & 255);
+                    mc.particleManager.addBlockDestroyEffects(var3, var4, var5, var6 & 255, var6 >> 8 & 255);
                     break;
             }
 

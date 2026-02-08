@@ -9,16 +9,16 @@ using betareborn.Client.Guis;
 
 namespace betareborn.Entities
 {
-    public class EntityPlayerSP : EntityPlayer
+    public class ClientPlayerEntity : EntityPlayer
     {
-        public static readonly new Class Class = ikvm.runtime.Util.getClassFromTypeHandle(typeof(EntityPlayerSP).TypeHandle);
+        public static readonly new Class Class = ikvm.runtime.Util.getClassFromTypeHandle(typeof(ClientPlayerEntity).TypeHandle);
         public MovementInput movementInput;
         protected Minecraft mc;
         private MouseFilter field_21903_bJ = new MouseFilter();
         private MouseFilter field_21904_bK = new MouseFilter();
         private MouseFilter field_21902_bL = new MouseFilter();
 
-        public EntityPlayerSP(Minecraft var1, World var2, Session var3, int var4) : base(var2)
+        public ClientPlayerEntity(Minecraft var1, World var2, Session var3, int var4) : base(var2)
         {
             mc = var1;
             dimension = var4;
@@ -168,7 +168,7 @@ namespace betareborn.Entities
 
         public override void sendPickup(Entity var1, int var2)
         {
-            mc.effectRenderer.addEffect(new EntityPickupFX(mc.theWorld, var1, this, -0.5F));
+            mc.particleManager.addEffect(new EntityPickupFX(mc.world, var1, this, -0.5F));
         }
 
         public int getPlayerArmorValue()

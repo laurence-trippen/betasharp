@@ -105,7 +105,7 @@ namespace betareborn.Client.Guis
                     var9 *= var9;
                     int var5 = achievementWindowWidth - 160;
                     int var6 = 0 - (int)(var9 * 36.0D);
-                    int var7 = theGame.renderEngine.getTexture("/achievement/bg.png");
+                    int var7 = theGame.textureManager.getTexture("/achievement/bg.png");
                     GLManager.GL.Color4(1.0F, 1.0F, 1.0F, 1.0F);
                     GLManager.GL.Enable(GLEnum.Lighting);
                     GLManager.GL.BindTexture(GLEnum.Texture2D, (uint)var7);
@@ -129,7 +129,7 @@ namespace betareborn.Client.Guis
                     GLManager.GL.Enable(GLEnum.RescaleNormal);
                     GLManager.GL.Enable(GLEnum.ColorMaterial);
                     GLManager.GL.Enable(GLEnum.Lighting);
-                    itemRender.renderItemIntoGUI(theGame.fontRenderer, theGame.renderEngine, theAchievement.icon, var5 + 8, var6 + 8);
+                    itemRender.renderItemIntoGUI(theGame.fontRenderer, theGame.textureManager, theAchievement.icon, var5 + 8, var6 + 8);
                     GLManager.GL.Disable(GLEnum.Lighting);
                     GLManager.GL.DepthMask(true);
                     GLManager.GL.Enable(GLEnum.DepthTest);

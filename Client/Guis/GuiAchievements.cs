@@ -176,8 +176,8 @@ namespace betareborn.Client.Guis
                 var5 = field_27123_v - 1;
             }
 
-            int var6 = mc.renderEngine.getTexture("/terrain.png");
-            int var7 = mc.renderEngine.getTexture("/achievement/bg.png");
+            int var6 = mc.textureManager.getTexture("/terrain.png");
+            int var7 = mc.textureManager.getTexture("/achievement/bg.png");
             int var8 = (width - field_27121_a) / 2;
             int var9 = (height - field_27119_i) / 2;
             int var10 = var8 + 16;
@@ -190,7 +190,7 @@ namespace betareborn.Client.Guis
             GLManager.GL.Disable(GLEnum.Lighting);
             GLManager.GL.Enable(GLEnum.RescaleNormal);
             GLManager.GL.Enable(GLEnum.ColorMaterial);
-            mc.renderEngine.bindTexture(var6);
+            mc.textureManager.bindTexture(var6);
             int var12 = var4 + 288 >> 4;
             int var13 = var5 + 288 >> 4;
             int var14 = (var4 + 288) % 16;
@@ -321,7 +321,7 @@ namespace betareborn.Client.Guis
                         GLManager.GL.Color4(var35, var35, var35, 1.0F);
                     }
 
-                    mc.renderEngine.bindTexture(var7);
+                    mc.textureManager.bindTexture(var7);
                     var33 = var10 + var16;
                     var34 = var11 + var17;
                     if (var30.isChallenge())
@@ -342,7 +342,7 @@ namespace betareborn.Client.Guis
 
                     GLManager.GL.Enable(GLEnum.Lighting);
                     GLManager.GL.Enable(GLEnum.CullFace);
-                    var29.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, var30.icon, var33 + 3, var34 + 3);
+                    var29.renderItemIntoGUI(mc.fontRenderer, mc.textureManager, var30.icon, var33 + 3, var34 + 3);
                     GLManager.GL.Disable(GLEnum.Lighting);
                     if (!field_27120_x.func_27181_b(var30))
                     {
@@ -360,7 +360,7 @@ namespace betareborn.Client.Guis
             GLManager.GL.Disable(GLEnum.DepthTest);
             GLManager.GL.Enable(GLEnum.Blend);
             GLManager.GL.Color4(1.0F, 1.0F, 1.0F, 1.0F);
-            mc.renderEngine.bindTexture(var7);
+            mc.textureManager.bindTexture(var7);
             drawTexturedModalRect(var8, var9, 0, 0, field_27121_a, field_27119_i);
             GLManager.GL.PopMatrix();
             zLevel = 0.0F;
