@@ -2,7 +2,7 @@ using betareborn.Biomes;
 using betareborn.Chunks;
 using java.util;
 
-namespace betareborn.Worlds
+namespace betareborn.Worlds.Biomes.Source
 {
     public class FixedBiomeSource : BiomeSource
     {

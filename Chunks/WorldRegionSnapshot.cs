@@ -2,6 +2,7 @@
 using betareborn.Worlds;
 using betareborn.Blocks.BlockEntities;
 using betareborn.Blocks.Materials;
+using betareborn.Worlds.Biomes.Source;
 
 namespace betareborn.Chunks
 {

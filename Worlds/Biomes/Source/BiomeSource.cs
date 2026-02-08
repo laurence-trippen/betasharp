@@ -1,7 +1,7 @@
 using betareborn.Biomes;
 using betareborn.Chunks;
 
-namespace betareborn.Worlds
+namespace betareborn.Worlds.Biomes.Source
 {
     public class BiomeSource : java.lang.Object
     {
@@ -36,7 +36,7 @@ namespace betareborn.Worlds
 
         public virtual double getTemperature(int x, int z)
         {
-            temperatureMap = temperatureSampler.sample(temperatureMap, (double)x, (double)z, 1, 1, (double)0.025F, (double)0.025F, 0.5D);
+            temperatureMap = temperatureSampler.sample(temperatureMap, x, z, 1, 1, (double)0.025F, (double)0.025F, 0.5D);
             return temperatureMap[0];
         }
 
@@ -53,8 +53,8 @@ namespace betareborn.Worlds
                 map = new double[width * depth];
             }
 
-            map = temperatureSampler.sample(map, (double)x, (double)z, width, depth, (double)0.025F, (double)0.025F, 0.25D);
-            weirdnessMap = weirdnessSampler.sample(weirdnessMap, (double)x, (double)z, width, depth, 0.25D, 0.25D, 0.5882352941176471D);
+            map = temperatureSampler.sample(map, x, z, width, depth, (double)0.025F, (double)0.025F, 0.25D);
+            weirdnessMap = weirdnessSampler.sample(weirdnessMap, x, z, width, depth, 0.25D, 0.25D, 0.5882352941176471D);
             int var6 = 0;
 
             for (int var7 = 0; var7 < width; ++var7)
@@ -91,9 +91,9 @@ namespace betareborn.Worlds
                 biomes = new Biome[width * depth];
             }
 
-            temperatureMap = temperatureSampler.sample(temperatureMap, (double)x, (double)z, width, width, (double)0.025F, (double)0.025F, 0.25D);
-            downfallMap = downfallSampler.sample(downfallMap, (double)x, (double)z, width, width, (double)0.05F, (double)0.05F, 1.0D / 3.0D);
-            weirdnessMap = weirdnessSampler.sample(weirdnessMap, (double)x, (double)z, width, width, 0.25D, 0.25D, 0.5882352941176471D);
+            temperatureMap = temperatureSampler.sample(temperatureMap, x, z, width, width, (double)0.025F, (double)0.025F, 0.25D);
+            downfallMap = downfallSampler.sample(downfallMap, x, z, width, width, (double)0.05F, (double)0.05F, 1.0D / 3.0D);
+            weirdnessMap = weirdnessSampler.sample(weirdnessMap, x, z, width, width, 0.25D, 0.25D, 0.5882352941176471D);
             int var6 = 0;
 
             for (int var7 = 0; var7 < width; ++var7)
