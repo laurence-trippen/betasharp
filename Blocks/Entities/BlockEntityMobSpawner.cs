@@ -117,15 +117,15 @@ namespace betareborn.Blocks.Entities
         public override void readNbt(NBTTagCompound nbt)
         {
             base.readNbt(nbt);
-            spawnedEntityId = nbt.getString("EntityId");
-            spawnDelay = nbt.getShort("Delay");
+            spawnedEntityId = nbt.GetString("EntityId");
+            spawnDelay = nbt.GetShort("Delay");
         }
 
         public override void writeNbt(NBTTagCompound nbt)
         {
             base.writeNbt(nbt);
-            nbt.setString("EntityId", spawnedEntityId);
-            nbt.setShort("Delay", (short)spawnDelay);
+            nbt.SetString("EntityId", spawnedEntityId);
+            nbt.SetShort("Delay", (short)spawnDelay);
         }
     }
 

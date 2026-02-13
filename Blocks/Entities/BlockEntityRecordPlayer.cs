@@ -9,7 +9,7 @@ namespace betareborn.Blocks.Entities
         public override void readNbt(NBTTagCompound nbt)
         {
             base.readNbt(nbt);
-            recordId = nbt.getInteger("Record");
+            recordId = nbt.GetInteger("Record");
         }
 
         public override void writeNbt(NBTTagCompound nbt)
@@ -17,7 +17,7 @@ namespace betareborn.Blocks.Entities
             base.writeNbt(nbt);
             if (recordId > 0)
             {
-                nbt.setInteger("Record", recordId);
+                nbt.SetInteger("Record", recordId);
             }
 
         }

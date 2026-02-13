@@ -46,9 +46,9 @@ namespace betareborn.Worlds.Storage
                             }
 
                             FileInputStream var5 = new(var4);
-                            NBTTagCompound var6 = NbtIo.read(var5);
+                            NBTTagCompound var6 = NbtIo.Read(var5);
                             var5.close();
-                            var3.readNBT(var6.getCompoundTag("data"));
+                            var3.readNBT(var6.GetCompoundTag("data"));
                         }
                     }
                     catch (java.lang.Exception var8)
@@ -111,12 +111,12 @@ namespace betareborn.Worlds.Storage
                         NBTTagCompound var3 = new();
                         var1.writeNBT(var3);
                         NBTTagCompound var4 = new();
-                        var4.setCompoundTag("data", var3);
+                        var4.SetCompoundTag("data", var3);
 
                         var saveTask = Task.Run(() =>
                         {
                             FileOutputStream var5 = new(var2);
-                            NbtIo.writeGzippedCompoundToOutputStream(var4, var5);
+                            NbtIo.WriteCompressed(var4, var5);
                             var5.close();
                         });
 
@@ -145,18 +145,16 @@ namespace betareborn.Worlds.Storage
                 if (var1 != null && var1.exists())
                 {
                     DataInputStream var2 = new(new FileInputStream(var1));
-                    NBTTagCompound var3 = NbtIo.read((DataInput)var2);
+                    NBTTagCompound var3 = NbtIo.Read((DataInput)var2);
                     var2.close();
-                    Iterator var4 = var3.func_28110_c().iterator();
 
-                    while (var4.hasNext())
+                    foreach (var var5 in var3.Values)
                     {
-                        NBTBase var5 = (NBTBase)var4.next();
                         if (var5 is NBTTagShort)
                         {
                             NBTTagShort var6 = (NBTTagShort)var5;
-                            string var7 = var6.getKey();
-                            short var8 = var6.shortValue;
+                            string var7 = var6.Key;
+                            short var8 = var6.Value;
                             idCounts.put(var7, Short.valueOf(var8));
                         }
                     }
@@ -200,11 +198,11 @@ namespace betareborn.Worlds.Storage
                         {
                             string var6 = (string)var5.next();
                             short var7 = ((Short)idCounts.get(var6)).shortValue();
-                            var4.setShort(var6, var7);
+                            var4.SetShort(var6, var7);
                         }
 
                         DataOutputStream var9 = new(new FileOutputStream(var3));
-                        NbtIo.write(var4, var9);
+                        NbtIo.Write(var4, var9);
                         var9.close();
                     }
                 }

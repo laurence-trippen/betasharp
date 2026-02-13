@@ -4,67 +4,61 @@ namespace betareborn.NBT
 {
     public sealed class NBTTagList : NBTBase
     {
-        private List<NBTBase> tagList = [];
-        private byte tagType;
+        private List<NBTBase> list = [];
+        private byte type;
 
-        public override void writeTagContents(DataOutput output)
+        public override void WriteTagContents(DataOutput output)
         {
-            if (tagList.Count > 0)
-            {
-                tagType = tagList[0].getType();
-            }
-            else
-            {
-                tagType = 1;
-            }
+            type = list.Count > 0 ? list[0].GetTagType() : (byte) 1;
 
-            output.writeByte(tagType);
-            output.writeInt(tagList.Count);
+            output.writeByte(type);
+            output.writeInt(list.Count);
 
-            foreach (var tag in tagList)
+            foreach (var tag in list)
             {
-                tag.writeTagContents(output);
+                tag.WriteTagContents(output);
             }
         }
 
-        public override void readTagContents(DataInput input)
+        public override void ReadTagContents(DataInput input)
         {
-            tagType = input.readByte();
+            list = [];
+            type = input.readByte();
+
             var length = input.readInt();
-            tagList = [];
 
             for (var index = 0; index < length; ++index)
             {
-                var tag = createTagOfType(tagType);
-                tag.readTagContents(input);
-                tagList.Add(tag);
+                var tag = CreateTagOfType(type);
+                tag.ReadTagContents(input);
+                list.Add(tag);
             }
         }
 
-        public override byte getType()
+        public override byte GetTagType()
         {
             return 9;
         }
 
-        public override string toString()
+        public override string ToString()
         {
-            return $"{tagList.Count} entries of type {getTagName(tagType)}";
+            return $"{list.Count} entries of type {GetTagName(type)}";
         }
 
-        public void setTag(NBTBase value)
+        public void SetTag(NBTBase value)
         {
-            tagType = value.getType();
-            tagList.Add(value);
+            type = value.GetTagType();
+            list.Add(value);
         }
 
-        public NBTBase tagAt(int value)
+        public NBTBase TagAt(int value)
         {
-            return tagList[value];
+            return list[value];
         }
 
-        public int tagCount()
+        public int TagCount()
         {
-            return tagList.Count;
+            return list.Count;
         }
     }
 }

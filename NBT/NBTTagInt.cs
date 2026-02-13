@@ -4,7 +4,7 @@ namespace betareborn.NBT
 {
     public sealed class NBTTagInt : NBTBase
     {
-        public int intValue;
+        public int Value { get; set; }
 
         public NBTTagInt()
         {
@@ -12,27 +12,27 @@ namespace betareborn.NBT
 
         public NBTTagInt(int value)
         {
-            intValue = value;
+            Value = value;
         }
 
-        public override void writeTagContents(DataOutput output)
+        public override void WriteTagContents(DataOutput output)
         {
-            output.writeInt(intValue);
+            output.writeInt(Value);
         }
 
-        public override void readTagContents(DataInput input)
+        public override void ReadTagContents(DataInput input)
         {
-            intValue = input.readInt();
+            Value = input.readInt();
         }
 
-        public override byte getType()
+        public override byte GetTagType()
         {
             return 3;
         }
 
-        public override string toString()
+        public override string ToString()
         {
-            return intValue.ToString();
+            return Value.ToString();
         }
     }
 }

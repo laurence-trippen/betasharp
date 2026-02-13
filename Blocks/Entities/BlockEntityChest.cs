@@ -68,13 +68,13 @@ namespace betareborn.Blocks.Entities
         public override void readNbt(NBTTagCompound nbt)
         {
             base.readNbt(nbt);
-            NBTTagList itemList = nbt.getTagList("Items");
+            NBTTagList itemList = nbt.GetTagList("Items");
             inventory = new ItemStack[size()];
 
-            for (int itemIndex = 0; itemIndex < itemList.tagCount(); ++itemIndex)
+            for (int itemIndex = 0; itemIndex < itemList.TagCount(); ++itemIndex)
             {
-                NBTTagCompound itemsTag = (NBTTagCompound)itemList.tagAt(itemIndex);
-                int slot = itemsTag.getByte("Slot") & 255;
+                NBTTagCompound itemsTag = (NBTTagCompound)itemList.TagAt(itemIndex);
+                int slot = itemsTag.GetByte("Slot") & 255;
                 if (slot >= 0 && slot < inventory.Length)
                 {
                     inventory[slot] = new ItemStack(itemsTag);
@@ -93,13 +93,13 @@ namespace betareborn.Blocks.Entities
                 if (inventory[slotIndex] != null)
                 {
                     NBTTagCompound itemsTag = new NBTTagCompound();
-                    itemsTag.setByte("Slot", (sbyte)slotIndex);
+                    itemsTag.SetByte("Slot", (sbyte)slotIndex);
                     inventory[slotIndex].writeToNBT(itemsTag);
-                    itemList.setTag(itemsTag);
+                    itemList.SetTag(itemsTag);
                 }
             }
 
-            nbt.setTag("Items", itemList);
+            nbt.SetTag("Items", itemList);
         }
 
         public int getMaxCountPerStack()

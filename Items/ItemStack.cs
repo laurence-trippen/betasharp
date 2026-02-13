@@ -95,17 +95,17 @@ namespace betareborn.Items
 
         public NBTTagCompound writeToNBT(NBTTagCompound nbt)
         {
-            nbt.setShort("id", (short)itemId);
-            nbt.setByte("Count", (sbyte)count);
-            nbt.setShort("Damage", (short)damage);
+            nbt.SetShort("id", (short)itemId);
+            nbt.SetByte("Count", (sbyte)count);
+            nbt.SetShort("Damage", (short)damage);
             return nbt;
         }
 
         public void readFromNBT(NBTTagCompound nbt)
         {
-            itemId = nbt.getShort("id");
-            count = nbt.getByte("Count");
-            damage = nbt.getShort("Damage");
+            itemId = nbt.GetShort("id");
+            count = nbt.GetByte("Count");
+            damage = nbt.GetShort("Damage");
         }
 
         public int getMaxCount()

@@ -32,9 +32,9 @@ namespace betareborn.Blocks.Entities
 
         public virtual void readNbt(NBTTagCompound nbt)
         {
-            x = nbt.getInteger("x");
-            y = nbt.getInteger("y");
-            z = nbt.getInteger("z");
+            x = nbt.GetInteger("x");
+            y = nbt.GetInteger("y");
+            z = nbt.GetInteger("z");
         }
 
         public virtual void writeNbt(NBTTagCompound nbt)
@@ -46,10 +46,10 @@ namespace betareborn.Blocks.Entities
             }
             else
             {
-                nbt.setString("id", entityId);
-                nbt.setInteger("x", x);
-                nbt.setInteger("y", y);
-                nbt.setInteger("z", z);
+                nbt.SetString("id", entityId);
+                nbt.SetInteger("x", x);
+                nbt.SetInteger("y", y);
+                nbt.SetInteger("z", z);
             }
         }
 
@@ -63,7 +63,7 @@ namespace betareborn.Blocks.Entities
 
             try
             {
-                Class blockEntityClass = (Class)idToClass.get(nbt.getString("id"));
+                Class blockEntityClass = (Class)idToClass.get(nbt.GetString("id"));
                 if (blockEntityClass != null)
                 {
                     blockEntity = (BlockEntity)blockEntityClass.newInstance();
@@ -80,7 +80,7 @@ namespace betareborn.Blocks.Entities
             }
             else
             {
-                java.lang.System.@out.println("Skipping TileEntity with id " + nbt.getString("id"));
+                java.lang.System.@out.println("Skipping TileEntity with id " + nbt.GetString("id"));
             }
 
             return blockEntity;

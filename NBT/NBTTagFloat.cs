@@ -5,7 +5,7 @@ namespace betareborn.NBT
 {
     public sealed class NBTTagFloat : NBTBase
     {
-        public float floatValue;
+        public float Value { get; set; }
 
         public NBTTagFloat()
         {
@@ -13,27 +13,27 @@ namespace betareborn.NBT
 
         public NBTTagFloat(float value)
         {
-            floatValue = value;
+            Value = value;
         }
 
-        public override void writeTagContents(DataOutput output)
+        public override void WriteTagContents(DataOutput output)
         {
-            output.writeFloat(floatValue);
+            output.writeFloat(Value);
         }
 
-        public override void readTagContents(DataInput input)
+        public override void ReadTagContents(DataInput input)
         {
-            floatValue = input.readFloat();
+            Value = input.readFloat();
         }
 
-        public override byte getType()
+        public override byte GetTagType()
         {
             return 5;
         }
 
-        public override string toString()
+        public override string ToString()
         {
-            return floatValue.ToString(CultureInfo.CurrentCulture);
+            return Value.ToString(CultureInfo.CurrentCulture);
         }
     }
 }

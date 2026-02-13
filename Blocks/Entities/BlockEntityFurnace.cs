@@ -70,29 +70,29 @@ namespace betareborn.Blocks.Entities
         public override void readNbt(NBTTagCompound nbt)
         {
             base.readNbt(nbt);
-            NBTTagList itemList = nbt.getTagList("Items");
+            NBTTagList itemList = nbt.GetTagList("Items");
             inventory = new ItemStack[size()];
 
-            for (int itemIndex = 0; itemIndex < itemList.tagCount(); ++itemIndex)
+            for (int itemIndex = 0; itemIndex < itemList.TagCount(); ++itemIndex)
             {
-                NBTTagCompound itemTag = (NBTTagCompound)itemList.tagAt(itemIndex);
-                sbyte slot = itemTag.getByte("Slot");
+                NBTTagCompound itemTag = (NBTTagCompound)itemList.TagAt(itemIndex);
+                sbyte slot = itemTag.GetByte("Slot");
                 if (slot >= 0 && slot < inventory.Length)
                 {
                     inventory[slot] = new ItemStack(itemTag);
                 }
             }
 
-            burnTime = nbt.getShort("BurnTime");
-            cookTime = nbt.getShort("CookTime");
+            burnTime = nbt.GetShort("BurnTime");
+            cookTime = nbt.GetShort("CookTime");
             fuelTime = getFuelTime(inventory[1]);
         }
 
         public override void writeNbt(NBTTagCompound nbt)
         {
             base.writeNbt(nbt);
-            nbt.setShort("BurnTime", (short)burnTime);
-            nbt.setShort("CookTime", (short)cookTime);
+            nbt.SetShort("BurnTime", (short)burnTime);
+            nbt.SetShort("CookTime", (short)cookTime);
             NBTTagList itemList = new NBTTagList();
 
             for (int slotIndex = 0; slotIndex < inventory.Length; ++slotIndex)
@@ -100,13 +100,13 @@ namespace betareborn.Blocks.Entities
                 if (inventory[slotIndex] != null)
                 {
                     NBTTagCompound slotTag = new NBTTagCompound();
-                    slotTag.setByte("Slot", (sbyte)slotIndex);
+                    slotTag.SetByte("Slot", (sbyte)slotIndex);
                     inventory[slotIndex].writeToNBT(slotTag);
-                    itemList.setTag(slotTag);
+                    itemList.SetTag(slotTag);
                 }
             }
 
-            nbt.setTag("Items", itemList);
+            nbt.SetTag("Items", itemList);
         }
 
         public int getMaxCountPerStack()

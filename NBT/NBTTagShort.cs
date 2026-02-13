@@ -4,7 +4,7 @@ namespace betareborn.NBT
 {
     public sealed class NBTTagShort : NBTBase
     {
-        public short shortValue;
+        public short Value { get; set; }
 
         public NBTTagShort()
         {
@@ -12,27 +12,27 @@ namespace betareborn.NBT
 
         public NBTTagShort(short value)
         {
-            shortValue = value;
+            Value = value;
         }
 
-        public override void writeTagContents(DataOutput output)
+        public override void WriteTagContents(DataOutput output)
         {
-            output.writeShort(shortValue);
+            output.writeShort(Value);
         }
 
-        public override void readTagContents(DataInput input)
+        public override void ReadTagContents(DataInput input)
         {
-            shortValue = input.readShort();
+            Value = input.readShort();
         }
 
-        public override byte getType()
+        public override byte GetTagType()
         {
             return 2;
         }
 
-        public override string toString()
+        public override string ToString()
         {
-            return shortValue.ToString();
+            return Value.ToString();
         }
     }
 }

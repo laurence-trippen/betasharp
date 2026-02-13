@@ -2,28 +2,17 @@ using java.io;
 
 namespace betareborn.NBT
 {
-    public abstract class NBTBase : java.lang.Object
+    public abstract class NBTBase
     {
-        private string? key;
+        public string Key { get; set; } = string.Empty;
 
-        public abstract void writeTagContents(DataOutput output);
+        public abstract void WriteTagContents(DataOutput output);
 
-        public abstract void readTagContents(DataInput input);
+        public abstract void ReadTagContents(DataInput input);
 
-        public abstract byte getType();
+        public abstract byte GetTagType();
 
-        public string getKey()
-        {
-            return key ?? string.Empty;
-        }
-
-        public NBTBase setKey(string value)
-        {
-            key = value;
-            return this;
-        }
-
-        public static NBTBase readTag(DataInput input)
+        public static NBTBase ReadTag(DataInput input)
         {
             var identifier = input.readByte();
 
@@ -32,28 +21,28 @@ namespace betareborn.NBT
                 return new NBTTagEnd();
             }
 
-            var tag = createTagOfType(identifier);
+            var tag = CreateTagOfType(identifier);
 
-            tag.key = input.readUTF();
-            tag.readTagContents(input);
+            tag.Key = input.readUTF();
+            tag.ReadTagContents(input);
 
             return tag;
         }
 
-        public static void writeTag(NBTBase tag, DataOutput output)
+        public static void WriteTag(NBTBase tag, DataOutput output)
         {
-            output.writeByte(tag.getType());
+            output.writeByte(tag.GetTagType());
 
-            if (tag.getType() is 0)
+            if (tag.GetTagType() is 0)
             {
                 return;
             }
 
-            output.writeUTF(tag.getKey());
-            tag.writeTagContents(output);
+            output.writeUTF(tag.Key);
+            tag.WriteTagContents(output);
         }
 
-        public static NBTBase createTagOfType(byte identifier)
+        public static NBTBase CreateTagOfType(byte identifier)
         {
             return identifier switch
             {
@@ -72,7 +61,7 @@ namespace betareborn.NBT
             };
         }
 
-        public static string getTagName(byte identifier)
+        public static string GetTagName(byte identifier)
         {
             return identifier switch
             {

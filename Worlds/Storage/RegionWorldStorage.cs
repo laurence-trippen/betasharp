@@ -111,7 +111,7 @@ namespace betareborn.Worlds.Storage
 
             NBTTagCompound var3 = var1.getNBTTagCompoundWithPlayer(var2);
             NBTTagCompound var4 = new();
-            var4.setTag("Data", var3);
+            var4.SetTag("Data", var3);
 
             try
             {
@@ -120,7 +120,7 @@ namespace betareborn.Worlds.Storage
                     java.io.File var5 = new java.io.File(saveDirectory, "level.dat_new");
                     java.io.File var6 = new java.io.File(saveDirectory, "level.dat_old");
                     java.io.File var7 = new java.io.File(saveDirectory, "level.dat");
-                    NbtIo.writeGzippedCompoundToOutputStream(var4, new FileOutputStream(var5));
+                    NbtIo.WriteCompressed(var4, new FileOutputStream(var5));
                     if (var6.exists())
                     {
                         var6.delete();
@@ -156,8 +156,8 @@ namespace betareborn.Worlds.Storage
             {
                 try
                 {
-                    var2 = NbtIo.read(new FileInputStream(var1));
-                    var3 = var2.getCompoundTag("Data");
+                    var2 = NbtIo.Read(new FileInputStream(var1));
+                    var3 = var2.GetCompoundTag("Data");
                     WorldProperties wInfo = new(var3);
                     return wInfo;
                 }
@@ -172,8 +172,8 @@ namespace betareborn.Worlds.Storage
             {
                 try
                 {
-                    var2 = NbtIo.read(new FileInputStream(var1));
-                    var3 = var2.getCompoundTag("Data");
+                    var2 = NbtIo.Read(new FileInputStream(var1));
+                    var3 = var2.GetCompoundTag("Data");
                     WorldProperties wInfo = new(var3);
                     return wInfo;
                 }
@@ -190,14 +190,14 @@ namespace betareborn.Worlds.Storage
         {
             NBTTagCompound var2 = var1.getNBTTagCompound();
             NBTTagCompound var3 = new NBTTagCompound();
-            var3.setTag("Data", var2);
+            var3.SetTag("Data", var2);
 
             try
             {
                 java.io.File var4 = new java.io.File(saveDirectory, "level.dat_new");
                 java.io.File var5 = new java.io.File(saveDirectory, "level.dat_old");
                 java.io.File var6 = new java.io.File(saveDirectory, "level.dat");
-                NbtIo.writeGzippedCompoundToOutputStream(var3, new FileOutputStream(var4));
+                NbtIo.WriteCompressed(var3, new FileOutputStream(var4));
                 if (var5.exists())
                 {
                     var5.delete();
@@ -235,7 +235,7 @@ namespace betareborn.Worlds.Storage
                 player.write(var2);
                 java.io.File var3 = new java.io.File(playersDirectory, "_tmp_.dat");
                 java.io.File var4 = new java.io.File(playersDirectory, player.name + ".dat");
-                NbtIo.writeGzippedCompoundToOutputStream(var2, new FileOutputStream(var3));
+                NbtIo.WriteCompressed(var2, new FileOutputStream(var3));
                 if (var4.exists())
                 {
                     var4.delete();
@@ -265,7 +265,7 @@ namespace betareborn.Worlds.Storage
                 java.io.File var2 = new java.io.File(playersDirectory, playerName + ".dat");
                 if (var2.exists())
                 {
-                    return NbtIo.read(new FileInputStream(var2));
+                    return NbtIo.Read(new FileInputStream(var2));
                 }
             }
             catch (Exception var3)

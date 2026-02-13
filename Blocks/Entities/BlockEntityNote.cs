@@ -12,13 +12,13 @@ namespace betareborn.Blocks.Entities
         public override void writeNbt(NBTTagCompound nbt)
         {
             base.writeNbt(nbt);
-            nbt.setByte("note", note);
+            nbt.SetByte("note", note);
         }
 
         public override void readNbt(NBTTagCompound nbt)
         {
             base.readNbt(nbt);
-            note = nbt.getByte("note");
+            note = nbt.GetByte("note");
             if (note < 0)
             {
                 note = 0;

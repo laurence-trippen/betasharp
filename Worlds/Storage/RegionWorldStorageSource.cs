@@ -103,8 +103,8 @@ namespace betareborn.Worlds.Storage
                 {
                     try
                     {
-                        var4 = NbtIo.read(new FileInputStream(var3));
-                        var5 = var4.getCompoundTag("Data");
+                        var4 = NbtIo.Read(new FileInputStream(var3));
+                        var5 = var4.GetCompoundTag("Data");
                         long sizeOnDisk = getFolderSizeMB(var2);
                         var wInfo = new WorldProperties(var5);
                         wInfo.setSizeOnDisk(sizeOnDisk);
@@ -121,8 +121,8 @@ namespace betareborn.Worlds.Storage
                 {
                     try
                     {
-                        var4 = NbtIo.read(new FileInputStream(var3));
-                        var5 = var4.getCompoundTag("Data");
+                        var4 = NbtIo.Read(new FileInputStream(var3));
+                        var5 = var4.GetCompoundTag("Data");
                         long sizeOnDisk = getFolderSizeMB(var2);
                         var wInfo = new WorldProperties(var5);
                         wInfo.setSizeOnDisk(sizeOnDisk);
@@ -148,10 +148,10 @@ namespace betareborn.Worlds.Storage
                 {
                     try
                     {
-                        betareborn.NBT.NBTTagCompound var5 = NbtIo.read(new FileInputStream(var4));
-                        betareborn.NBT.NBTTagCompound var6 = var5.getCompoundTag("Data");
-                        var6.setString("LevelName", var2);
-                        NbtIo.writeGzippedCompoundToOutputStream(var5, new FileOutputStream(var4));
+                        betareborn.NBT.NBTTagCompound var5 = NbtIo.Read(new FileInputStream(var4));
+                        betareborn.NBT.NBTTagCompound var6 = var5.GetCompoundTag("Data");
+                        var6.SetString("LevelName", var2);
+                        NbtIo.WriteCompressed(var5, new FileOutputStream(var4));
                     }
                     catch (java.lang.Exception var7)
                     {

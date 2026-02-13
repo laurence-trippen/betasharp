@@ -160,21 +160,21 @@ namespace betareborn.Blocks.Entities
         public override void readNbt(NBTTagCompound nbt)
         {
             base.readNbt(nbt);
-            pushedBlockId = nbt.getInteger("blockId");
-            pushedBlockData = nbt.getInteger("blockData");
-            facing = nbt.getInteger("facing");
-            progress = lastProgess = nbt.getFloat("progress");
-            extending = nbt.getBoolean("extending");
+            pushedBlockId = nbt.GetInteger("blockId");
+            pushedBlockData = nbt.GetInteger("blockData");
+            facing = nbt.GetInteger("facing");
+            progress = lastProgess = nbt.GetFloat("progress");
+            extending = nbt.GetBoolean("extending");
         }
 
         public override void writeNbt(NBTTagCompound nbt)
         {
             base.writeNbt(nbt);
-            nbt.setInteger("blockId", pushedBlockId);
-            nbt.setInteger("blockData", pushedBlockData);
-            nbt.setInteger("facing", facing);
-            nbt.setFloat("progress", progress);
-            nbt.setBoolean("extending", extending);
+            nbt.SetInteger("blockId", pushedBlockId);
+            nbt.SetInteger("blockData", pushedBlockData);
+            nbt.SetInteger("facing", facing);
+            nbt.SetFloat("progress", progress);
+            nbt.SetBoolean("extending", extending);
         }
     }
 }

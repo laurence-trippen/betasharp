@@ -1,12 +1,36 @@
 using betareborn.NBT;
 using java.io;
 using java.util.zip;
+using Console = System.Console;
 
 namespace betareborn
 {
-    public class NbtIo : java.lang.Object
+    public static class NbtIo
     {
-        public static NBTTagCompound read(InputStream input)
+        public static void Write(NBTTagCompound tag, DataOutput output)
+        {
+            NBTBase.WriteTag(tag, output);
+        }
+
+        public static void WriteCompressed(NBTTagCompound tag, OutputStream output)
+        {
+            var stream = new DataOutputStream(new GZIPOutputStream(output));
+
+            try
+            {
+                Write(tag, stream);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Failed to write a compressed NBT; {exception.Message}");
+            }
+            finally
+            {
+                stream.close();
+            }
+        }
+
+        public static NBTTagCompound Read(InputStream input)
         {
             var stream = new DataInputStream(new GZIPInputStream(input));
 
@@ -14,7 +38,7 @@ namespace betareborn
 
             try
             {
-                tag = read((DataInput) stream);
+                tag = Read((DataInput) stream);
             }
             finally
             {
@@ -24,35 +48,16 @@ namespace betareborn
             return tag;
         }
 
-        public static void writeGzippedCompoundToOutputStream(NBTTagCompound tag, OutputStream output)
+        public static NBTTagCompound Read(DataInput input)
         {
-            var stream = new DataOutputStream(new GZIPOutputStream(output));
+            var tag = NBTBase.ReadTag(input);
 
-            try
-            {
-                write(tag, stream);
-            }
-            finally
-            {
-                stream.close();
-            }
-        }
-
-        public static NBTTagCompound read(DataInput input)
-        {
-            var tag = NBTBase.readTag(input);
-            
             if (tag is NBTTagCompound compound)
             {
                 return compound;
             }
 
             throw new InvalidOperationException("Root tag must be a named compound tag");
-        }
-
-        public static void write(NBTTagCompound tag, DataOutput output)
-        {
-            NBTBase.writeTag(tag, output);
         }
     }
 }

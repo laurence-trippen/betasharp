@@ -24,22 +24,22 @@ namespace betareborn.Worlds
 
         public WorldProperties(NBTTagCompound var1)
         {
-            randomSeed = var1.getLong("RandomSeed");
-            spawnX = var1.getInteger("SpawnX");
-            spawnY = var1.getInteger("SpawnY");
-            spawnZ = var1.getInteger("SpawnZ");
-            worldTime = var1.getLong("Time");
-            lastTimePlayed = var1.getLong("LastPlayed");
-            levelName = var1.getString("LevelName");
-            saveVersion = var1.getInteger("version");
-            rainTime = var1.getInteger("rainTime");
-            raining = var1.getBoolean("raining");
-            thunderTime = var1.getInteger("thunderTime");
-            thundering = var1.getBoolean("thundering");
-            if (var1.hasKey("Player"))
+            randomSeed = var1.GetLong("RandomSeed");
+            spawnX = var1.GetInteger("SpawnX");
+            spawnY = var1.GetInteger("SpawnY");
+            spawnZ = var1.GetInteger("SpawnZ");
+            worldTime = var1.GetLong("Time");
+            lastTimePlayed = var1.GetLong("LastPlayed");
+            levelName = var1.GetString("LevelName");
+            saveVersion = var1.GetInteger("version");
+            rainTime = var1.GetInteger("rainTime");
+            raining = var1.GetBoolean("raining");
+            thunderTime = var1.GetInteger("thunderTime");
+            thundering = var1.GetBoolean("thundering");
+            if (var1.HasKey("Player"))
             {
-                playerTag = var1.getCompoundTag("Player");
-                dimension = playerTag.getInteger("Dimension");
+                playerTag = var1.GetCompoundTag("Player");
+                dimension = playerTag.GetInteger("Dimension");
             }
 
         }
@@ -98,22 +98,22 @@ namespace betareborn.Worlds
 
         private void updateTagCompound(NBTTagCompound var1, NBTTagCompound var2)
         {
-            var1.setLong("RandomSeed", randomSeed);
-            var1.setInteger("SpawnX", spawnX);
-            var1.setInteger("SpawnY", spawnY);
-            var1.setInteger("SpawnZ", spawnZ);
-            var1.setLong("Time", worldTime);
-            var1.setLong("SizeOnDisk", sizeOnDisk);
-            var1.setLong("LastPlayed", java.lang.System.currentTimeMillis());
-            var1.setString("LevelName", levelName);
-            var1.setInteger("version", saveVersion);
-            var1.setInteger("rainTime", rainTime);
-            var1.setBoolean("raining", raining);
-            var1.setInteger("thunderTime", thunderTime);
-            var1.setBoolean("thundering", thundering);
+            var1.SetLong("RandomSeed", randomSeed);
+            var1.SetInteger("SpawnX", spawnX);
+            var1.SetInteger("SpawnY", spawnY);
+            var1.SetInteger("SpawnZ", spawnZ);
+            var1.SetLong("Time", worldTime);
+            var1.SetLong("SizeOnDisk", sizeOnDisk);
+            var1.SetLong("LastPlayed", java.lang.System.currentTimeMillis());
+            var1.SetString("LevelName", levelName);
+            var1.SetInteger("version", saveVersion);
+            var1.SetInteger("rainTime", rainTime);
+            var1.SetBoolean("raining", raining);
+            var1.SetInteger("thunderTime", thunderTime);
+            var1.SetBoolean("thundering", thundering);
             if (var2 != null)
             {
-                var1.setCompoundTag("Player", var2);
+                var1.SetCompoundTag("Player", var2);
             }
 
         }
